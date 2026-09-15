@@ -19,11 +19,19 @@
       theme: {
         extend: {
           colors: {
-            void: '#05070A',
-            panel: 'rgba(10, 14, 23, 0.70)',
-            hairline: 'rgba(255, 255, 255, 0.07)',
-            phosphor: '#00FF9D',
-            phosphorMuted: 'rgba(0, 255, 157, 0.15)',
+            brandDark: '#010307',
+            cardBg: '#080B13',
+            cardBorder: 'rgba(255, 255, 255, 0.08)',
+            neonBlue: '#2563EB',
+            electricCyan: '#38BDF8',
+            accentGlow: 'rgba(37, 99, 235, 0.45)',
+            textSub: '#94A3B8',
+            textMuted: '#64748B',
+            void: '#010307',
+            panel: 'rgba(8, 12, 22, 0.72)',
+            hairline: 'rgba(255, 255, 255, 0.08)',
+            phosphor: '#38BDF8',
+            phosphorMuted: 'rgba(56, 189, 248, 0.15)',
             alarm: '#FF3B30',
             alarmMuted: 'rgba(255, 59, 48, 0.15)',
             cyanGlaze: '#38BDF8',
@@ -39,7 +47,7 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
 
     * {
       box-sizing: border-box;
@@ -48,8 +56,8 @@
     }
 
     body {
-      background-color: #05070A;
-      color: #E2E8F0;
+      background-color: #010307;
+      color: #F8FAFC;
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       margin: 0;
       padding: 0;
@@ -59,27 +67,74 @@
       height: 100vh;
     }
 
-    /* Awwwards-Grade Glass Island Architecture */
+    /* Ambient Glow 1: Top-Right Volumetric Light Beam (Matching Landing Page) */
+    .hero-glow-top {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 750px;
+      height: 650px;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(circle at 80% 10%, rgba(37, 99, 235, 0.45) 0%, rgba(14, 165, 233, 0.20) 35%, transparent 70%);
+      filter: blur(55px);
+    }
+
+    /* Ambient Glow 2: Bottom Upward Radiating HUD Beam (Matching Landing Page) */
+    .bottom-hud-glow {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 950px;
+      height: 450px;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(ellipse 800px 400px at 50% 100%, rgba(37, 99, 235, 0.40) 0%, rgba(14, 165, 233, 0.15) 45%, transparent 75%);
+      filter: blur(55px);
+    }
+
+    /* Exact Glass Island Architecture matching landing page cards */
     .glass-island {
-      background: rgba(8, 12, 20, 0.65);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
-                  0 20px 40px -15px rgba(0, 0, 0, 0.7);
-      border-radius: 16px;
-      transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(8, 12, 22, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                  0 20px 40px -15px rgba(0, 0, 0, 0.8);
+      border-radius: 20px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .glass-island:hover {
-      border-color: rgba(255, 255, 255, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                  0 25px 50px -12px rgba(37, 99, 235, 0.25);
     }
 
-    .glass-pill {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    /* Electric Blue Gradient Button (from index.html) */
+    .btn-electric-blue {
+      background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+    .btn-electric-blue:hover {
+      background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
+      box-shadow: 0 0 30px rgba(37, 99, 235, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Subtle Dark Pill Button (from index.html) */
+    .btn-dark-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: all 0.2s ease;
+    }
+    .btn-dark-pill:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .tabular {
@@ -99,20 +154,21 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #FFFFFF;
+      background: #38BDF8;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 255, 157, 0.6);
-      transition: transform 0.15s ease;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.8), 0 0 20px rgba(37, 99, 235, 0.5);
+      transition: transform 0.15s ease, background-color 0.15s ease;
     }
     input[type=range].scrub-rail::-webkit-slider-thumb:hover {
       transform: scale(1.3);
+      background: #FFFFFF;
     }
 
-    /* CRT Analog Phosphor Waveform Screen */
+    /* CRT Analog Waveform Screen (Styled with Neon Blue Glow) */
     .crt-screen {
-      background: radial-gradient(circle at 50% 50%, rgba(0, 255, 157, 0.03) 0%, rgba(0, 0, 0, 0.8) 100%);
+      background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, rgba(1, 3, 7, 0.95) 100%);
       box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
-      border: 1px solid rgba(0, 255, 157, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.2);
     }
 
     /* Subtle pulsing radar status dot */
@@ -133,52 +189,56 @@
   <!-- LAYER 0: FULL-BLEED 3D WEBGL ENGINE VIEWPORT -->
   <div id="canvas-container" class="fixed inset-0 w-full h-full z-0 cursor-grab active:cursor-grabbing"></div>
 
-  <!-- LAYER 1: VIGNETTE & SUBTLE CINEMATIC OVERLAY -->
-  <div class="fixed inset-0 pointer-events-none z-[1] bg-[radial-gradient(circle_at_center,transparent_40%,rgba(5,7,10,0.7)_100%)]"></div>
+  <!-- LAYER 1: AMBIENT GLOWS (MATCHING LANDING PAGE) -->
+  <div class="hero-glow-top"></div>
+  <div class="bottom-hud-glow"></div>
 
-  <!-- LAYER 2: SPATIAL HUD ARCHITECTURE (POINTER EVENTS CONTAINER) -->
+  <!-- LAYER 2: VIGNETTE & SUBTLE CINEMATIC OVERLAY -->
+  <div class="fixed inset-0 pointer-events-none z-[2] bg-[radial-gradient(circle_at_center,transparent_45%,rgba(1,3,7,0.75)_100%)]"></div>
+
+  <!-- LAYER 3: SPATIAL HUD ARCHITECTURE (POINTER EVENTS CONTAINER) -->
   <div class="fixed inset-0 z-10 pointer-events-none p-6 sm:p-8 flex flex-col justify-between">
 
     <!-- TOP FLOATING COMMAND BAR -->
     <header class="flex items-center justify-between pointer-events-auto">
       
-      <!-- Brand & Standard Pill -->
+      <!-- Brand & Standard Pill (Matching Landing Page Logo) -->
       <div class="glass-island px-4 py-2.5 flex items-center space-x-3.5">
-        <div class="h-6 w-6 rounded-lg bg-phosphor/10 border border-phosphor/30 flex items-center justify-center font-mono font-bold text-xs text-phosphor">
-          KL
+        <div class="h-7 w-7 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
+          <i data-lucide="shield" class="w-4 h-4"></i>
         </div>
         <div class="flex items-center space-x-2.5">
           <span class="font-extrabold text-xs tracking-tight text-white">KINLOCK</span>
-          <span class="text-steel/50 font-mono text-[11px]">/</span>
-          <span class="text-[10px] font-mono tracking-widest uppercase text-steel">FEP FLIGHT GOVERNOR</span>
+          <span class="text-slate-500 font-mono text-[11px]">/</span>
+          <span class="text-[10px] font-mono tracking-widest uppercase text-slate-400">FEP FLIGHT GOVERNOR</span>
         </div>
         <div class="h-3.5 w-px bg-white/10"></div>
         <div class="flex items-center space-x-1.5">
-          <span class="h-1.5 w-1.5 rounded-full bg-phosphor"></span>
-          <span class="text-[10px] font-mono text-phosphor font-semibold tracking-wider">ISO 13849 SIL-2</span>
+          <span class="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span class="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider">ISO 13849 SIL-2</span>
         </div>
       </div>
 
       <!-- Center Status Beacon: Live Flight Envelope Safety State -->
-      <div id="status-beacon" class="hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-phosphor/20">
+      <div id="status-beacon" class="hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-blue-500/30">
         <span class="relative flex h-2 w-2">
-          <span id="status-beacon-halo" class="halo-beacon absolute inline-flex h-full w-full rounded-full bg-phosphor"></span>
-          <span id="status-beacon-dot" class="relative inline-flex rounded-full h-2 w-2 bg-phosphor"></span>
+          <span id="status-beacon-halo" class="halo-beacon absolute inline-flex h-full w-full rounded-full bg-cyan-400"></span>
+          <span id="status-beacon-dot" class="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
         </span>
-        <span id="status-beacon-text" class="text-[11px] font-mono font-bold tracking-wider text-phosphor uppercase">
+        <span id="status-beacon-text" class="text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase">
           NULL-SPACE PROJECTION NOMINAL
         </span>
-        <span class="text-[10px] font-mono text-steel/60">(LeRobot #3154 Clamped)</span>
+        <span class="text-[10px] font-mono text-slate-400">(LeRobot #3154 Clamped)</span>
       </div>
 
       <!-- Top Right: Camera Presets & Links -->
       <div class="glass-island p-1.5 flex items-center space-x-1.5 text-xs font-mono">
-        <button onclick="setCameraView('front')" class="px-3 py-1.5 rounded-lg text-steel hover:text-white hover:bg-white/5 transition text-[11px]">Front</button>
-        <button onclick="setCameraView('top')" class="px-3 py-1.5 rounded-lg text-steel hover:text-white hover:bg-white/5 transition text-[11px]">Top</button>
-        <button onclick="setCameraView('grasp')" class="px-3 py-1.5 rounded-lg text-steel hover:text-white hover:bg-white/5 transition text-[11px]">Grasp</button>
-        <button id="btn-orbit" onclick="toggleAutoRotate()" class="px-3 py-1.5 rounded-lg text-steel hover:text-white hover:bg-white/5 transition text-[11px]">Orbit: Off</button>
+        <button onclick="setCameraView('front')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Front</button>
+        <button onclick="setCameraView('top')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Top</button>
+        <button onclick="setCameraView('grasp')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Grasp</button>
+        <button id="btn-orbit" onclick="toggleAutoRotate()" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Orbit: Off</button>
         <div class="h-3.5 w-px bg-white/10 mx-1"></div>
-        <a href="index.html" class="px-3 py-1.5 rounded-lg text-cyanGlaze hover:text-white hover:bg-cyanGlaze/10 transition text-[11px] flex items-center space-x-1.5">
+        <a href="index.html" class="px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-100 text-black font-semibold transition text-[11px] flex items-center space-x-1.5 shadow-sm">
           <span>Dossier</span>
           <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
@@ -197,38 +257,38 @@
         
         <!-- Header -->
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-mono tracking-widest text-steel uppercase">Internal Tensile Strain</span>
-          <span id="trip-badge" class="text-[9px] font-mono px-2 py-0.5 rounded bg-phosphor/10 text-phosphor border border-phosphor/20 font-bold">
+          <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase font-semibold">Internal Tensile Strain</span>
+          <span id="trip-badge" class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold">
             &le; 15.0 N LIMIT
           </span>
         </div>
 
         <!-- Hero Metric Number -->
         <div class="flex items-baseline space-x-2">
-          <span id="hero-force-num" class="text-4xl sm:text-5xl font-extrabold font-mono text-phosphor tracking-tight tabular">0.02</span>
-          <span class="text-base font-mono text-steel">N</span>
-          <span id="hero-force-sub" class="text-xs font-mono text-steel/60 ml-auto tabular">(100% Attenuation)</span>
+          <span id="hero-force-num" class="text-4xl sm:text-5xl font-extrabold font-mono text-cyan-400 tracking-tight tabular">0.02</span>
+          <span class="text-base font-mono text-slate-400">N</span>
+          <span id="hero-force-sub" class="text-xs font-mono text-slate-400 ml-auto tabular">(100% Attenuation)</span>
         </div>
 
         <!-- Micro Sparkline & Span Metric -->
         <div class="space-y-2 pt-2 border-t border-white/5">
-          <div class="h-10 w-full bg-black/40 rounded-lg overflow-hidden relative">
+          <div class="h-10 w-full bg-black/50 rounded-lg overflow-hidden relative border border-white/5">
             <canvas id="sparklineCanvas" class="w-full h-full"></canvas>
           </div>
           
           <div class="flex justify-between items-center text-[11px] font-mono">
-            <span class="text-steel">Grasp Span:</span>
+            <span class="text-slate-400">Grasp Span:</span>
             <span id="metric-span" class="text-white font-semibold tabular">250.00 mm</span>
-            <span class="text-steel/50">|</span>
-            <span class="text-steel">Drift:</span>
-            <span id="metric-drift" class="text-phosphor font-bold tabular">0.000 mm</span>
+            <span class="text-slate-600">|</span>
+            <span class="text-slate-400">Drift:</span>
+            <span id="metric-drift" class="text-cyan-400 font-bold tabular">0.000 mm</span>
           </div>
         </div>
 
         <!-- Governor Latency Metric -->
-        <div class="flex items-center justify-between text-[10px] font-mono text-steel/70 pt-1 border-t border-white/5">
+        <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1 border-t border-white/5">
           <span>Projection Latency:</span>
-          <span id="metric-latency" class="text-cyanGlaze font-bold tabular">&lt; 0.1 ms (1,000 Hz)</span>
+          <span id="metric-latency" class="text-blue-400 font-bold tabular">&lt; 0.1 ms (1,000 Hz)</span>
         </div>
 
       </div>
@@ -237,30 +297,30 @@
       <div class="glass-island px-6 py-4 w-full lg:max-w-xl pointer-events-auto flex flex-col space-y-3.5 mx-auto">
         
         <!-- Mode Switcher Pill -->
-        <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-black/50 border border-white/5">
-          <button id="btn-mode-unfiltered" onclick="setControlMode('UNFILTERED')" class="py-2 px-3 rounded-lg text-xs font-mono text-steel hover:text-white transition flex items-center justify-center space-x-2">
+        <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-black/60 border border-white/5">
+          <button id="btn-mode-unfiltered" onclick="setControlMode('UNFILTERED')" class="py-2 px-3 rounded-lg text-xs font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-2">
             <span class="h-1.5 w-1.5 rounded-full bg-alarm"></span>
             <span>UNFILTERED VLA (LeRobot #3154)</span>
           </button>
-          <button id="btn-mode-governed" onclick="setControlMode('GOVERNED')" class="py-2 px-3 rounded-lg text-xs font-mono bg-phosphor/20 text-phosphor border border-phosphor/30 shadow-lg transition flex items-center justify-center space-x-2">
-            <span class="h-1.5 w-1.5 rounded-full bg-phosphor"></span>
-            <span class="font-bold">KINLOCK FEP GOVERNOR</span>
+          <button id="btn-mode-governed" onclick="setControlMode('GOVERNED')" class="py-2 px-3 rounded-lg text-xs font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-2">
+            <span class="h-1.5 w-1.5 rounded-full bg-cyan-300"></span>
+            <span>KINLOCK FEP GOVERNOR</span>
           </button>
         </div>
 
         <!-- Trajectory Timeline Scrubber -->
         <div class="flex items-center space-x-4">
           <button id="btn-play" onclick="togglePlayback()" class="h-9 w-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition shrink-0" title="Play/Pause (Space)">
-            <i id="icon-play" data-lucide="play" class="w-4 h-4 fill-current text-phosphor"></i>
+            <i id="icon-play" data-lucide="play" class="w-4 h-4 fill-current text-cyan-400"></i>
           </button>
-          <button onclick="resetPlayback()" class="h-9 w-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-steel hover:text-white transition shrink-0" title="Reset (R)">
+          <button onclick="resetPlayback()" class="h-9 w-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition shrink-0" title="Reset (R)">
             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
           </button>
           
           <!-- Scrubber Track -->
           <div class="flex-1 flex flex-col justify-center space-y-1">
             <input id="scrubber" type="range" min="0" max="150" value="0" class="scrub-rail w-full cursor-pointer" oninput="onScrub(this.value)">
-            <div class="flex justify-between text-[9px] font-mono text-steel/60">
+            <div class="flex justify-between text-[9px] font-mono text-slate-400">
               <span id="step-display">STEP: 000 / 150</span>
               <span>LeRobot Dataset (150 Chunks)</span>
             </div>
@@ -268,11 +328,11 @@
         </div>
 
         <!-- Micro Drawer for Parameters -->
-        <div class="flex items-center justify-between text-[10px] font-mono text-steel pt-1 border-t border-white/5">
+        <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1 border-t border-white/5">
           <span>&alpha; = 12.0 s⁻¹</span>
-          <span class="text-steel/40">&bull;</span>
+          <span class="text-slate-600">&bull;</span>
           <span>k_eff = 34.29 N/mm</span>
-          <span class="text-steel/40">&bull;</span>
+          <span class="text-slate-600">&bull;</span>
           <span>Hotkeys: Space (Play) | S (Stop) | R (Reset)</span>
         </div>
 
@@ -284,27 +344,27 @@
         <!-- Header -->
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <div class="h-2 w-2 rounded-full bg-cyanGlaze pulse-halo"></div>
-            <span class="text-[10px] font-mono tracking-widest text-steel uppercase font-semibold">Speechmatics Reflex</span>
+            <div class="h-2 w-2 rounded-full bg-cyan-400 halo-beacon"></div>
+            <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase font-semibold">Speechmatics Reflex</span>
           </div>
-          <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-cyanGlaze/10 text-cyanGlaze border border-cyanGlaze/20 font-bold">
+          <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold">
             Sub-50ms Brake
           </span>
         </div>
 
-        <!-- CRT Analog Phosphor Scope -->
+        <!-- CRT Analog Scope -->
         <div class="h-16 w-full rounded-xl crt-screen relative overflow-hidden flex items-center justify-center">
           <canvas id="crtCanvas" class="w-full h-full"></canvas>
-          <div class="absolute bottom-1 right-2 text-[8px] font-mono text-phosphor/60 tracking-wider">16kHz PCM STREAM</div>
+          <div class="absolute bottom-1 right-2 text-[8px] font-mono text-cyan-400/70 tracking-wider">16kHz PCM STREAM</div>
         </div>
 
         <!-- Live Streaming Partials Transcript Feed -->
-        <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 space-y-1">
-          <div class="flex justify-between text-[9px] font-mono text-steel">
+        <div class="p-2.5 rounded-xl bg-black/50 border border-white/5 space-y-1">
+          <div class="flex justify-between text-[9px] font-mono text-slate-400">
             <span>Streaming Tokens:</span>
-            <span id="live-mic-label" class="text-phosphor font-bold">Key: Active (neu.rt)</span>
+            <span id="live-mic-label" class="text-cyan-400 font-bold">Key: Active (neu.rt)</span>
           </div>
-          <div id="transcript-feed" class="h-12 overflow-y-auto text-[10px] font-mono text-steel/90 space-y-0.5 leading-tight">
+          <div id="transcript-feed" class="h-12 overflow-y-auto text-[10px] font-mono text-slate-300 space-y-0.5 leading-tight">
             <div>&gt; WebSocket ready. Listening for abort phonemes...</div>
           </div>
         </div>
@@ -320,13 +380,13 @@
               <i data-lucide="hand" class="w-3 h-3"></i>
               <span>"HALT!"</span>
             </button>
-            <button onclick="injectKeyword('RESUME')" class="py-1.5 px-2 rounded-lg bg-phosphor/20 hover:bg-phosphor/30 border border-phosphor/30 text-phosphor font-mono text-[10px] font-bold transition flex items-center justify-center space-x-1">
+            <button onclick="injectKeyword('RESUME')" class="py-1.5 px-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-cyan-300 font-mono text-[10px] font-bold transition flex items-center justify-center space-x-1">
               <i data-lucide="play" class="w-3 h-3"></i>
               <span>"RESUME"</span>
             </button>
           </div>
-          <button id="btn-mic" onclick="toggleMic()" class="w-full py-1.5 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-steel hover:text-white font-mono text-[10px] flex items-center justify-center space-x-1.5 transition">
-            <i data-lucide="mic" class="w-3 h-3 text-cyanGlaze"></i>
+          <button id="btn-mic" onclick="toggleMic()" class="w-full py-1.5 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-mono text-[10px] flex items-center justify-center space-x-1.5 transition">
+            <i data-lucide="mic" class="w-3 h-3 text-cyan-400"></i>
             <span id="btn-mic-text">Connect Browser Mic to Reflex</span>
           </button>
         </div>
@@ -479,10 +539,10 @@
        ========================================================================== */
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x05070A);
+    scene.background = new THREE.Color(0x010307);
 
-    // Fog for depth fading
-    scene.fog = new THREE.FogExp2(0x05070A, 0.0009);
+    // Fog for depth fading matching landing page pitch void
+    scene.fog = new THREE.FogExp2(0x010307, 0.0009);
 
     // Camera
     const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 1, 4000);
@@ -493,7 +553,7 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -502,23 +562,25 @@
     controls.maxPolarAngle = Math.PI / 2 + 0.02;
     controls.target.set(0, 160, 50);
 
-    // Lighting (Studio Rim Lights + Soft Key)
-    const hemiLight = new THREE.HemisphereLight(0x38bdf8, 0x05070a, 0.5);
+    // Studio Lighting matching landing page blue aurora atmosphere
+    const hemiLight = new THREE.HemisphereLight(0x38BDF8, 0x010307, 0.45);
     scene.add(hemiLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
     keyLight.position.set(250, 450, 200);
     scene.add(keyLight);
 
-    const rimLightLeft = new THREE.PointLight(0x00FF9D, 1.8, 700);
+    // Left Rim Light: Deep Electric Blue (#2563EB)
+    const rimLightLeft = new THREE.PointLight(0x2563EB, 2.2, 800);
     rimLightLeft.position.set(-300, 250, -100);
     scene.add(rimLightLeft);
 
-    const rimLightRight = new THREE.PointLight(0x38BDF8, 1.8, 700);
+    // Right Rim Light: Electric Cyan (#38BDF8)
+    const rimLightRight = new THREE.PointLight(0x38BDF8, 2.0, 800);
     rimLightRight.position.set(300, 250, -100);
     scene.add(rimLightRight);
 
-    // Infinite Radial Floor Grid (Shader Falloff)
+    // Infinite Radial Floor Grid (Shader Falloff with Neon Blue Tint)
     const gridGeometry = new THREE.PlaneGeometry(1600, 1600, 64, 64);
     const gridShaderMat = new THREE.ShaderMaterial({
       transparent: true,
@@ -549,7 +611,8 @@
           float dist = length(vWorldPos.xz);
           float alpha = exp(-pow(dist / (uMaxRadius * 0.55), 2.0));
 
-          vec3 gridColor = vec3(0.12, 0.18, 0.28);
+          // Electric midnight blue floor grid lines
+          vec3 gridColor = vec3(0.09, 0.18, 0.38);
           gl_FragColor = vec4(gridColor, c * alpha * 0.45);
         }
       `
@@ -575,7 +638,7 @@
     });
 
     const matLaser = new THREE.LineBasicMaterial({
-      color: 0x00FF9D,
+      color: 0x38BDF8,
       linewidth: 2,
       transparent: true,
       opacity: 0.85
@@ -584,11 +647,11 @@
     // Workpiece (Subdivided plate that bows dynamically on drift)
     const plateGeo = new THREE.BoxGeometry(250, 14, 75, 20, 2, 2);
     const plateMat = new THREE.MeshPhysicalMaterial({
-      color: 0x0F172A,
+      color: 0x080F1E,
       metalness: 0.4,
       roughness: 0.3,
-      emissive: 0x00FF9D,
-      emissiveIntensity: 0.2
+      emissive: 0x2563EB,
+      emissiveIntensity: 0.25
     });
     const workpieceMesh = new THREE.Mesh(plateGeo, plateMat);
     scene.add(workpieceMesh);
@@ -674,17 +737,17 @@
         plateMat.emissiveIntensity = Math.min(1.5, 0.4 + (force / 300.0));
         matLaser.color.setHex(0xFF3B30);
       } else {
-        // Governed Nominal: Phosphor Green
-        plateMat.emissive.setHex(0x00FF9D);
-        plateMat.emissiveIntensity = 0.25;
-        matLaser.color.setHex(0x00FF9D);
+        // Governed Nominal: Electric Blue & Cyan
+        plateMat.emissive.setHex(0x2563EB);
+        plateMat.emissiveIntensity = 0.35;
+        matLaser.color.setHex(0x38BDF8);
       }
 
       return { dist, drift, force };
     }
 
     /* ==========================================================================
-       CRT PHOSPHOR PERSISTENCE OSCILLOSCOPE (Canvas)
+       CRT ANALOG OSCILLOSCOPE (Canvas)
        ========================================================================== */
     const crtCanvas = document.getElementById('crtCanvas');
     const crtCtx = crtCanvas.getContext('2d');
@@ -703,8 +766,8 @@
     resizeCrt();
 
     function drawCrt() {
-      // Phosphor decay trail
-      crtCtx.fillStyle = 'rgba(5, 7, 10, 0.28)';
+      // Phosphor decay trail in deep void blue
+      crtCtx.fillStyle = 'rgba(1, 3, 7, 0.28)';
       crtCtx.fillRect(0, 0, crtCanvas.width, crtCanvas.height);
 
       const w = crtCanvas.width;
@@ -712,8 +775,8 @@
       const mid = h / 2;
 
       crtCtx.lineWidth = 1.5 * window.devicePixelRatio;
-      crtCtx.strokeStyle = emergencyHalt ? '#FF3B30' : '#00FF9D';
-      crtCtx.shadowColor = emergencyHalt ? '#FF3B30' : '#00FF9D';
+      crtCtx.strokeStyle = emergencyHalt ? '#FF3B30' : '#38BDF8';
+      crtCtx.shadowColor = emergencyHalt ? '#FF3B30' : '#38BDF8';
       crtCtx.shadowBlur = 8;
       crtCtx.beginPath();
 
@@ -748,7 +811,7 @@
 
       const maxVal = Math.max(25.0, ...forceHistory);
 
-      sparkCtx.strokeStyle = controlMode === 'UNFILTERED' ? '#FF3B30' : '#00FF9D';
+      sparkCtx.strokeStyle = controlMode === 'UNFILTERED' ? '#FF3B30' : '#38BDF8';
       sparkCtx.lineWidth = 1.8 * window.devicePixelRatio;
       sparkCtx.beginPath();
 
@@ -828,13 +891,13 @@
         tripBadge.innerText = "OVERLOAD FAULT (> 15N)";
         document.getElementById('hero-force-sub').innerText = "(Servo Stall Imminent)";
       } else {
-        heroNum.className = "text-4xl sm:text-5xl font-extrabold font-mono text-phosphor tracking-tight tabular";
-        beacon.className = "hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-phosphor/20";
-        beaconText.className = "text-[11px] font-mono font-bold tracking-wider text-phosphor uppercase";
+        heroNum.className = "text-4xl sm:text-5xl font-extrabold font-mono text-cyan-400 tracking-tight tabular";
+        beacon.className = "hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-blue-500/30";
+        beaconText.className = "text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase";
         beaconText.innerText = "NULL-SPACE PROJECTION NOMINAL";
-        beaconHalo.className = "halo-beacon absolute inline-flex h-full w-full rounded-full bg-phosphor";
-        beaconDot.className = "relative inline-flex rounded-full h-2 w-2 bg-phosphor";
-        tripBadge.className = "text-[9px] font-mono px-2 py-0.5 rounded bg-phosphor/10 text-phosphor border border-phosphor/20 font-bold";
+        beaconHalo.className = "halo-beacon absolute inline-flex h-full w-full rounded-full bg-cyan-400";
+        beaconDot.className = "relative inline-flex rounded-full h-2 w-2 bg-cyan-400";
+        tripBadge.className = "text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold";
         tripBadge.innerText = "≤ 15.0 N LIMIT";
         document.getElementById('hero-force-sub').innerText = "(100% Attenuation)";
       }
@@ -851,10 +914,10 @@
       const bGov = document.getElementById('btn-mode-governed');
       if (mode === 'UNFILTERED') {
         bUnf.className = "py-2 px-3 rounded-lg text-xs font-mono bg-alarm/20 text-alarm border border-alarm/30 shadow-lg transition flex items-center justify-center space-x-2";
-        bGov.className = "py-2 px-3 rounded-lg text-xs font-mono text-steel hover:text-white transition flex items-center justify-center space-x-2";
+        bGov.className = "py-2 px-3 rounded-lg text-xs font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-2";
       } else {
-        bGov.className = "py-2 px-3 rounded-lg text-xs font-mono bg-phosphor/20 text-phosphor border border-phosphor/30 shadow-lg transition flex items-center justify-center space-x-2";
-        bUnf.className = "py-2 px-3 rounded-lg text-xs font-mono text-steel hover:text-white transition flex items-center justify-center space-x-2";
+        bGov.className = "py-2 px-3 rounded-lg text-xs font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-2";
+        bUnf.className = "py-2 px-3 rounded-lg text-xs font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-2";
       }
     }
 
@@ -931,7 +994,7 @@
       } else if (word === 'RESUME') {
         emergencyHalt = false;
         feed.innerHTML += `
-          <div class="text-phosphor font-bold">
+          <div class="text-cyan-300 font-bold">
             [${timeStr}] "RESUME" (0.98) &rarr; VELOCITY RESTORED
           </div>`;
       }
@@ -968,14 +1031,14 @@
         micRecognition.onstart = () => {
           micActive = true;
           btnText.innerText = "Listening... (Say 'STOP')";
-          feed.innerHTML += `<div class="text-cyanGlaze font-bold">&gt; [MIC LIVE] Say 'STOP' or 'HALT' to trip brake...</div>`;
+          feed.innerHTML += `<div class="text-cyan-400 font-bold">&gt; [MIC LIVE] Say 'STOP' or 'HALT' to trip brake...</div>`;
           feed.scrollTop = feed.scrollHeight;
         };
 
         micRecognition.onresult = (e) => {
           for (let i = e.resultIndex; i < e.results.length; ++i) {
             const txt = e.results[i][0].transcript.trim().toLowerCase();
-            feed.innerHTML += `<div class="text-steel">&gt; "${txt}"</div>`;
+            feed.innerHTML += `<div class="text-slate-400">&gt; "${txt}"</div>`;
             feed.scrollTop = feed.scrollHeight;
 
             if (txt.includes('stop') || txt.includes('halt') || txt.includes('freeze') || txt.includes('wait')) {
