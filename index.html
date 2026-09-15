@@ -41,6 +41,12 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
 
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
     body {
       background-color: #010307;
       color: #F8FAFC;
@@ -48,6 +54,19 @@
       overflow-x: hidden;
       margin: 0;
       padding: 0;
+    }
+
+    /* Awwwards Subtle Film Grain Overlay */
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.022;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
     /* Ambient Glow 1: Hero Top-Right Volumetric Light Beam */
@@ -60,7 +79,8 @@
       pointer-events: none;
       z-index: 0;
       background: radial-gradient(circle at 80% 10%, rgba(37, 99, 235, 0.55) 0%, rgba(14, 165, 233, 0.25) 35%, transparent 70%);
-      filter: blur(50px);
+      filter: blur(55px);
+      animation: aurora-breathe 14s ease-in-out infinite alternate;
     }
 
     /* Ambient Glow 2: Horizontal Dual Flare Behind Middle Section */
@@ -76,7 +96,8 @@
       background: 
         radial-gradient(ellipse 600px 350px at 0% 50%, rgba(37, 99, 235, 0.50) 0%, rgba(2, 132, 199, 0.2) 40%, transparent 75%),
         radial-gradient(ellipse 600px 350px at 100% 50%, rgba(37, 99, 235, 0.50) 0%, rgba(2, 132, 199, 0.2) 40%, transparent 75%);
-      filter: blur(40px);
+      filter: blur(45px);
+      animation: aurora-pulse 16s ease-in-out infinite alternate;
     }
 
     /* Ambient Glow 3: Upward Radiating Bottom Light Beam */
@@ -90,24 +111,81 @@
       pointer-events: none;
       z-index: 0;
       background: radial-gradient(ellipse 800px 500px at 50% 100%, rgba(37, 99, 235, 0.6) 0%, rgba(14, 165, 233, 0.25) 45%, transparent 75%);
-      filter: blur(50px);
+      filter: blur(55px);
+      animation: aurora-float 12s ease-in-out infinite alternate;
     }
 
-    /* Exact Glass Card Styling from Reference */
+    /* Organic Aurora Breathing Animations */
+    @keyframes aurora-breathe {
+      0%, 100% {
+        transform: scale(1) translate(0px, 0px);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scale(1.08) translate(-20px, 15px);
+        opacity: 0.95;
+      }
+    }
+
+    @keyframes aurora-pulse {
+      0%, 100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 0.65;
+      }
+      50% {
+        transform: translateY(-50%) scale(1.05);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes aurora-float {
+      0%, 100% {
+        transform: translate(-50%, 0px) scale(1);
+        opacity: 0.75;
+      }
+      50% {
+        transform: translate(-50%, -20px) scale(1.06);
+        opacity: 1.0;
+      }
+    }
+
+    /* Exact Glass Card Styling with Dynamic Specular Spotlight Cursor Follower */
     .ref-card {
-      background: rgba(8, 12, 22, 0.7);
+      position: relative;
+      background: rgba(8, 12, 22, 0.72);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
                   0 20px 40px -15px rgba(0, 0, 0, 0.8);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
     .ref-card:hover {
-      border-color: rgba(56, 189, 248, 0.3);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18),
-                  0 25px 50px -12px rgba(37, 99, 235, 0.25);
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20),
+                  0 25px 50px -12px rgba(37, 99, 235, 0.30);
+      transform: translateY(-2px);
+    }
+    /* Cursor Spotlight Glow */
+    .ref-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: radial-gradient(380px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(56, 189, 248, 0.22), transparent 45%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 0;
+    }
+    .ref-card:hover::before {
+      opacity: 1;
+    }
+    .ref-card > * {
+      position: relative;
+      z-index: 1;
     }
 
     /* Electric Blue Button with Radial Glow */
@@ -115,12 +193,12 @@
       background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 0 20px rgba(37, 99, 235, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-electric-blue:hover {
       background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
-      box-shadow: 0 0 30px rgba(37, 99, 235, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(37, 99, 235, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      transform: translateY(-1.5px) scale(1.01);
     }
 
     /* Subtle Dark Pill Button */
@@ -128,26 +206,79 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-dark-pill:hover {
       background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
     }
 
     /* Concentric Rings Visual */
     .concentric-rings {
       position: absolute;
       pointer-events: none;
-      opacity: 0.15;
+      opacity: 0.18;
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-slow {
+      animation: spin-slow 50s linear infinite;
+      transform-origin: center;
     }
 
     .tabular {
       font-variant-numeric: tabular-nums;
     }
+
+    /* Awwwards Smooth Scroll Reveal Engine */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(8px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
+    }
+    .reveal-on-scroll.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+    .stagger-1 { transition-delay: 80ms; }
+    .stagger-2 { transition-delay: 160ms; }
+    .stagger-3 { transition-delay: 240ms; }
+    .stagger-4 { transition-delay: 320ms; }
+
+    /* Animated Traveling Data Pulse */
+    @keyframes flow-pulse {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
+    }
+    .flow-laser-track {
+      position: relative;
+      overflow: hidden;
+    }
+    .flow-laser-track::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.9), transparent);
+      animation: flow-pulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
   </style>
 </head>
 <body class="relative">
+
+  <!-- AWWWARDS FILM GRAIN -->
+  <div class="film-grain"></div>
 
   <!-- TOP RIGHT VOLUMETRIC HERO GLOW -->
   <div class="hero-glow-top"></div>
@@ -194,70 +325,85 @@
   <section id="overview" class="relative pt-20 pb-20 px-6 sm:px-10 max-w-5xl mx-auto text-center z-10 flex flex-col items-center">
     
     <!-- Top Pill Badge -->
-    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full btn-dark-pill text-xs text-blue-400 font-medium mb-6">
+    <div class="reveal-on-scroll inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full btn-dark-pill text-xs text-blue-400 font-medium mb-6">
       <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
       <span>ISO 13849 PL-d SIL-2 Runtime Certified</span>
       <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
     </div>
 
     <!-- Main Headline with Electric Blue Accent -->
-    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08] mb-6">
+    <h1 class="reveal-on-scroll stagger-1 text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08] mb-6">
       Deliver Safe Bimanual Action <br>
       Seamless With <span class="bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-300 bg-clip-text text-transparent">KINLOCK</span>
     </h1>
 
     <!-- 2-Line Subtitle -->
-    <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
+    <p class="reveal-on-scroll stagger-2 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
       Protecting Dual SO-101 Robotic Workpieces From End-to-End VLA Drift. <br>
       Hugging Face LeRobot #3154 Remediation & Speechmatics Sub-50ms Reflex.
     </p>
 
     <!-- Primary Electric Blue Hero Button -->
-    <div class="mb-14">
+    <div class="reveal-on-scroll stagger-3 mb-14">
       <a href="console.html" class="px-6 py-3 rounded-full btn-electric-blue text-white font-semibold text-xs inline-flex items-center space-x-2">
         <span>Open Sovereign Cockpit</span>
         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
       </a>
     </div>
 
-    <!-- Interactive Flow Diagram Container (Matching Reference Flow Box) -->
-    <div class="w-full max-w-4xl p-6 sm:p-8 ref-card text-left relative overflow-hidden mb-16">
+    <!-- Interactive Flow Diagram Container (Matching Reference Flow Box with Moving Laser Data Track) -->
+    <div class="reveal-on-scroll stagger-4 w-full max-w-4xl p-6 sm:p-8 ref-card text-left relative overflow-hidden mb-16">
       
-      <!-- Top Window Dots -->
-      <div class="flex items-center space-x-1.5 mb-6 border-b border-white/5 pb-4">
-        <div class="h-2.5 w-2.5 rounded-full bg-white/20"></div>
-        <div class="h-2.5 w-2.5 rounded-full bg-white/20"></div>
-        <div class="h-2.5 w-2.5 rounded-full bg-white/20"></div>
-        <span class="text-[10px] font-mono text-slate-500 ml-2">KINLOCK RUNTIME SCHEMATIC // 1,000 Hz</span>
+      <!-- Top Window Dots with Laser Stream Indicator -->
+      <div class="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
+        <div class="flex items-center space-x-1.5">
+          <div class="h-2.5 w-2.5 rounded-full bg-white/20"></div>
+          <div class="h-2.5 w-2.5 rounded-full bg-white/20"></div>
+          <div class="h-2.5 w-2.5 rounded-full bg-white/20"></div>
+          <span class="text-[10px] font-mono text-slate-500 ml-2">KINLOCK RUNTIME SCHEMATIC // 1,000 Hz</span>
+        </div>
+        <div class="h-1 w-32 rounded-full bg-white/5 flow-laser-track hidden sm:block"></div>
       </div>
 
       <!-- Flow Architecture Graphic -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
         
         <!-- Left: Neural VLA Input -->
-        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
-          <div class="text-[10px] font-mono text-blue-400 uppercase font-bold">10–30 Hz Cognitive Layer</div>
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 hover:border-blue-500/30 transition">
+          <div class="text-[10px] font-mono text-blue-400 uppercase font-bold flex items-center justify-between">
+            <span>10–30 Hz Cognitive</span>
+            <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          </div>
           <div class="text-sm font-bold text-white">OpenVINO / SmolVLA</div>
           <div class="text-xs text-slate-400 font-mono">12-DOF Velocity Proposal \(\mathbf{\dot{q}}_{\text{vla}}\)</div>
           <div class="text-[10px] text-red-400 font-mono">Prone to asynchronous drift</div>
         </div>
 
         <!-- Center: KINLOCK Null-Space Governor -->
-        <div class="p-5 rounded-xl bg-blue-600/10 border border-blue-500/30 space-y-2 shadow-lg shadow-blue-500/10">
+        <div class="p-5 rounded-xl bg-blue-600/10 border border-blue-500/30 space-y-2 shadow-lg shadow-blue-500/10 relative overflow-hidden">
           <div class="flex justify-between items-center text-[10px] font-mono text-cyan-300 font-bold">
-            <span>SOVEREIGN FEP GOVERNOR</span>
-            <span>1,000 Hz</span>
+            <span class="flex items-center space-x-1.5">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>SOVEREIGN FEP</span>
+            </span>
+            <span class="px-1.5 py-0.5 rounded bg-cyan-400/10 text-cyan-300">1,000 Hz</span>
           </div>
           <div class="text-sm font-bold text-white">Moore-Penrose Projection</div>
           <div class="p-2 rounded bg-black/60 font-mono text-[10px] text-blue-300 overflow-x-auto">
             $$\mathbf{\dot{q}}_{\text{safe}} = \mathbf{\dot{q}} - \mathbf{C}^+ (\mathbf{C}\mathbf{\dot{q}} + \alpha \Delta r)$$
           </div>
-          <div class="text-[10px] text-emerald-400 font-mono font-bold">Execution: &lt; 0.1 ms (&lt; 100 &mu;s)</div>
+          <div class="text-[10px] text-emerald-400 font-mono font-bold flex items-center space-x-1">
+            <i data-lucide="zap" class="w-3 h-3"></i>
+            <span>Latency: &lt; 0.1 ms (&lt; 100 &mu;s)</span>
+          </div>
         </div>
 
         <!-- Right: Actuators -->
-        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
-          <div class="text-[10px] font-mono text-emerald-400 uppercase font-bold">Physical Actuation</div>
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 hover:border-emerald-500/30 transition">
+          <div class="text-[10px] font-mono text-emerald-400 uppercase font-bold flex items-center justify-between">
+            <span>Physical Actuation</span>
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+          </div>
           <div class="text-sm font-bold text-white">Dual SO-101 Servos</div>
           <div class="text-xs text-slate-400 font-mono">Rigid 250mm Plate Invariant</div>
           <div class="text-[10px] text-emerald-400 font-mono font-bold">Peak Force Clamped &le; 0.02 N</div>
@@ -278,7 +424,7 @@
     </div>
 
     <!-- Ecosystem Partner / Logo Bar -->
-    <div class="w-full space-y-4">
+    <div class="reveal-on-scroll w-full space-y-4">
       <div class="text-[11px] font-mono tracking-widest text-slate-500 uppercase">
         Engineered for the Modern Physical AI Stack
       </div>
@@ -300,7 +446,7 @@
   <section id="architecture" class="relative py-28 px-6 sm:px-10 max-w-6xl mx-auto z-10">
     
     <!-- Section Tag & Title -->
-    <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+    <div class="reveal-on-scroll text-center max-w-3xl mx-auto mb-16 space-y-3">
       <div class="inline-flex items-center px-3 py-1 rounded-full btn-dark-pill text-[11px] text-blue-400 font-mono">
         FEP Governor
       </div>
@@ -316,7 +462,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       
       <!-- Card 1 -->
-      <div class="ref-card p-6 space-y-4 flex flex-col justify-between">
+      <div class="reveal-on-scroll stagger-1 ref-card p-6 space-y-4 flex flex-col justify-between">
         <div class="space-y-3">
           <div class="h-9 w-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
             <i data-lucide="layers" class="w-4 h-4"></i>
@@ -344,7 +490,7 @@
       </div>
 
       <!-- Card 2 -->
-      <div class="ref-card p-6 space-y-4 flex flex-col justify-between">
+      <div class="reveal-on-scroll stagger-2 ref-card p-6 space-y-4 flex flex-col justify-between">
         <div class="space-y-3">
           <div class="h-9 w-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
             <i data-lucide="activity" class="w-4 h-4"></i>
@@ -372,7 +518,7 @@
       </div>
 
       <!-- Card 3 -->
-      <div class="ref-card p-6 space-y-4 flex flex-col justify-between">
+      <div class="reveal-on-scroll stagger-3 ref-card p-6 space-y-4 flex flex-col justify-between">
         <div class="space-y-3">
           <div class="h-9 w-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
             <i data-lucide="mic" class="w-4 h-4"></i>
@@ -407,9 +553,9 @@
        ========================================================================= -->
   <section class="relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10">
     
-    <!-- Concentric Rings Graphic on the right -->
+    <!-- Concentric Rings Graphic on the right with Slow Orbital Spin -->
     <div class="concentric-rings right-0 top-1/2 -translate-y-1/2 w-96 h-96">
-      <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="spin-slow w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="200" cy="200" r="180" stroke="#2563EB" stroke-width="1" stroke-dasharray="4 4"/>
         <circle cx="200" cy="200" r="140" stroke="#2563EB" stroke-width="1"/>
         <circle cx="200" cy="200" r="100" stroke="#2563EB" stroke-width="1" stroke-dasharray="2 2"/>
@@ -418,7 +564,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
-      <div class="lg:col-span-6 space-y-4">
+      <div class="reveal-on-scroll lg:col-span-6 space-y-4">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           Native Compatibility Across Your Entire Physical AI Stack
         </h2>
@@ -468,7 +614,7 @@
     <!-- MID-PAGE HORIZONTAL DUAL FLARE (EXACT REFERENCE REPLICA) -->
     <div class="mid-horizontal-glow"></div>
 
-    <div class="text-center max-w-2xl mx-auto mb-12 space-y-3 relative z-10">
+    <div class="reveal-on-scroll text-center max-w-2xl mx-auto mb-12 space-y-3 relative z-10">
       <div class="inline-flex items-center px-3 py-1 rounded-full btn-dark-pill text-[11px] text-blue-400 font-mono">
         Kinematic Core
       </div>
@@ -481,7 +627,7 @@
     </div>
 
     <!-- Central High-Impact Prompt Card from Reference -->
-    <div class="ref-card p-6 sm:p-8 space-y-6 relative z-10 max-w-3xl mx-auto">
+    <div class="reveal-on-scroll stagger-1 ref-card p-6 sm:p-8 space-y-6 relative z-10 max-w-3xl mx-auto">
       
       <!-- Search/Prompt Bar Style Header -->
       <div class="p-3.5 rounded-xl bg-black/70 border border-blue-500/30 flex items-center justify-between">
@@ -505,17 +651,34 @@
         </div>
       </div>
 
+      <!-- Interactive Kinematic Stress Simulator Widget -->
+      <div class="p-4 rounded-xl bg-black/60 border border-white/5 space-y-2.5">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-slate-400 flex items-center space-x-1.5">
+            <i data-lucide="sliders" class="w-3.5 h-3.5 text-blue-400"></i>
+            <span>Interactive Drift Simulator (\(\Delta r\)):</span>
+          </span>
+          <span id="slider-drift-readout" class="text-cyan-400 font-bold tabular">59.32 mm</span>
+        </div>
+        <input id="landing-drift-slider" type="range" min="0.0" max="60.0" step="0.1" value="59.3" class="w-full accent-blue-500 cursor-pointer scrub-rail" oninput="onLandingDriftChange(this.value)">
+        <div class="flex justify-between text-[9px] font-mono text-slate-500">
+          <span>0.0 mm (Synchronous)</span>
+          <span>&le; 0.43 mm (Safe Limit)</span>
+          <span class="text-red-400">59.32 mm (LeRobot #3154 Peak)</span>
+        </div>
+      </div>
+
       <!-- Comparative Live Verification Meter -->
       <div class="p-4 rounded-xl bg-black/60 border border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-        <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 space-y-1">
+        <div id="meter-unfiltered-box" class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 space-y-1 transition-all">
           <span class="text-[10px] text-red-400 uppercase font-bold">Unfiltered VLA Drift</span>
-          <div class="text-xl font-bold text-red-400 tabular">2,033.99 N</div>
-          <div class="text-[10px] text-red-300/70">Gear Stripping Failure</div>
+          <div id="meter-unfiltered-force" class="text-xl font-bold text-red-400 tabular">2,033.99 N</div>
+          <div id="meter-unfiltered-status" class="text-[10px] text-red-300/70">Gear Stripping Failure (> 15N)</div>
         </div>
         <div class="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 space-y-1">
           <span class="text-[10px] text-blue-400 uppercase font-bold">KINLOCK Governed</span>
           <div class="text-xl font-bold text-blue-400 tabular">0.02 N</div>
-          <div class="text-[10px] text-emerald-400 font-bold">100.0% Force Clamped</div>
+          <div class="text-[10px] text-emerald-400 font-bold">100.0% Force Clamped (&le; 15N)</div>
         </div>
       </div>
 
@@ -538,7 +701,7 @@
        ========================================================================= -->
   <section id="audit" class="relative py-28 px-6 sm:px-10 max-w-6xl mx-auto z-10">
     
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
+    <div class="reveal-on-scroll flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
       <div>
         <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           The Four-Tier Radical Honesty Audit
@@ -548,9 +711,9 @@
         </p>
       </div>
 
-      <!-- Big Metric on Right (Matching Reference "92%...") -->
+      <!-- Big Metric on Right with Interactive Count-Up -->
       <div class="flex items-baseline space-x-2 text-right">
-        <span class="text-4xl sm:text-5xl font-extrabold text-blue-500 font-mono tabular">100%</span>
+        <span id="counter-metric" class="text-4xl sm:text-5xl font-extrabold text-blue-500 font-mono tabular">100%</span>
         <span class="text-xs font-mono text-slate-400 uppercase tracking-wider">FORCE ATTENUATION<br>ON DIVERGENCE</span>
       </div>
     </div>
@@ -559,7 +722,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
       
       <!-- Tier A -->
-      <div class="ref-card p-5 space-y-3">
+      <div class="reveal-on-scroll stagger-1 ref-card p-5 space-y-3">
         <div class="flex items-center space-x-2 text-blue-400 font-bold">
           <i data-lucide="check-circle" class="w-4 h-4"></i>
           <span>Tier A: Vendor Facts</span>
@@ -573,7 +736,7 @@
       </div>
 
       <!-- Tier B -->
-      <div class="ref-card p-5 space-y-3">
+      <div class="reveal-on-scroll stagger-2 ref-card p-5 space-y-3">
         <div class="flex items-center space-x-2 text-cyan-400 font-bold">
           <i data-lucide="git-commit" class="w-4 h-4"></i>
           <span>Tier B: First Principles</span>
@@ -587,7 +750,7 @@
       </div>
 
       <!-- Tier C -->
-      <div class="ref-card p-5 space-y-3">
+      <div class="reveal-on-scroll stagger-3 ref-card p-5 space-y-3">
         <div class="flex items-center space-x-2 text-amber-400 font-bold">
           <i data-lucide="sliders" class="w-4 h-4"></i>
           <span>Tier C: Scoped Params</span>
@@ -601,7 +764,7 @@
       </div>
 
       <!-- Tier D -->
-      <div class="ref-card p-5 space-y-3">
+      <div class="reveal-on-scroll stagger-4 ref-card p-5 space-y-3">
         <div class="flex items-center space-x-2 text-emerald-400 font-bold">
           <i data-lucide="zap" class="w-4 h-4"></i>
           <span>Tier D: Empirical Receipts</span>
@@ -622,7 +785,7 @@
        ========================================================================= -->
   <section class="relative py-28 px-6 sm:px-10 max-w-5xl mx-auto z-10">
     
-    <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+    <div class="reveal-on-scroll text-center max-w-2xl mx-auto mb-12 space-y-3">
       <div class="inline-flex items-center px-3 py-1 rounded-full btn-dark-pill text-[11px] text-blue-400 font-mono">
         Integration
       </div>
@@ -638,7 +801,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
       <!-- Card 1 -->
-      <div class="ref-card p-8 space-y-6 flex flex-col justify-between">
+      <div class="reveal-on-scroll stagger-1 ref-card p-8 space-y-6 flex flex-col justify-between">
         <div class="space-y-4">
           <div class="flex justify-between items-center font-mono text-xs text-slate-400">
             <span>Intel Challenge Track</span>
@@ -675,7 +838,7 @@
       </div>
 
       <!-- Card 2 (Highlighted with Blue Button) -->
-      <div class="ref-card p-8 space-y-6 flex flex-col justify-between border-blue-500/40">
+      <div class="reveal-on-scroll stagger-2 ref-card p-8 space-y-6 flex flex-col justify-between border-blue-500/40">
         <div class="space-y-4">
           <div class="flex justify-between items-center font-mono text-xs text-blue-400 font-bold">
             <span>Speechmatics Voice Track</span>
@@ -722,7 +885,7 @@
     <!-- BOTTOM UPWARD BLUE AURORA GLOW (EXACT REFERENCE REPLICA) -->
     <div class="bottom-cta-glow"></div>
 
-    <div class="relative z-10 space-y-6 max-w-2xl mx-auto">
+    <div class="reveal-on-scroll relative z-10 space-y-6 max-w-2xl mx-auto">
       <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
         Take the Sovereign Way <br> to Production Robotics
       </h2>
@@ -806,6 +969,96 @@
 
   <script>
     lucide.createIcons();
+
+    /* =========================================================================
+       1. AWWWARDS CARD SPOTLIGHT CURSOR FOLLOWER
+       ========================================================================= */
+    const cards = document.querySelectorAll('.ref-card');
+    document.addEventListener('mousemove', (e) => {
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    /* =========================================================================
+       2. AWWWARDS SMOOTH SCROLL REVEAL OBSERVER
+       ========================================================================= */
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    /* =========================================================================
+       3. INTERACTIVE KINEMATIC DIVERGENCE SIMULATOR (SLIDER)
+       ========================================================================= */
+    const K_EFF = 34.29; // N/mm Hooke effective series stiffness
+    function onLandingDriftChange(val) {
+      const drift = parseFloat(val);
+      const readout = document.getElementById('slider-drift-readout');
+      const forceElem = document.getElementById('meter-unfiltered-force');
+      const statusElem = document.getElementById('meter-unfiltered-status');
+      const boxElem = document.getElementById('meter-unfiltered-box');
+
+      readout.innerText = `${drift.toFixed(2)} mm`;
+      const unfilteredForce = drift * K_EFF;
+      forceElem.innerText = `${unfilteredForce.toFixed(2)} N`;
+
+      if (unfilteredForce > 15.0) {
+        statusElem.innerText = "Gear Stripping Failure (> 15N)";
+        statusElem.className = "text-[10px] text-red-300/70";
+        boxElem.className = "p-3 rounded-lg bg-red-500/10 border border-red-500/20 space-y-1 transition-all";
+        forceElem.className = "text-xl font-bold text-red-400 tabular";
+      } else {
+        statusElem.innerText = "Nominal Sub-Critical (< 15N)";
+        statusElem.className = "text-[10px] text-emerald-300/70";
+        boxElem.className = "p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 space-y-1 transition-all";
+        forceElem.className = "text-xl font-bold text-emerald-400 tabular";
+      }
+    }
+
+    /* =========================================================================
+       4. NUMERIC COUNT-UP ANIMATION FOR RADICAL HONESTY METRIC
+       ========================================================================= */
+    let counterAnimated = false;
+    const metricElem = document.getElementById('counter-metric');
+    const metricObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !counterAnimated) {
+          counterAnimated = true;
+          let count = 0;
+          const duration = 1200; // ms
+          const start = performance.now();
+          function updateCounter(now) {
+            const progress = Math.min(1, (now - start) / duration);
+            // Ease out cubic
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(ease * 100);
+            metricElem.innerText = `${current}%`;
+            if (progress < 1) {
+              requestAnimationFrame(updateCounter);
+            } else {
+              metricElem.innerText = "100%";
+            }
+          }
+          requestAnimationFrame(updateCounter);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    if (metricElem) metricObserver.observe(metricElem);
   </script>
 </body>
 </html>
