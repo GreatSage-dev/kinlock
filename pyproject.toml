@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kinlock"
+version = "1.0.0"
+description = "Deterministic Flight Envelope Protection Runtime for Bimanual VLA Robotics"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26.0",
+    "scipy>=1.12.0",
+    "websockets>=12.0",
+]
+
+[tool.vercel]
+entrypoint = "api/index.py"
