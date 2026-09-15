@@ -42,6 +42,9 @@ python test/verify_kinlock.py
 python -m pytest test/test_kinlock.py -v
 
 # 3. Run live Speechmatics Realtime WebSocket verification
+# (Runs offline replay benchmark by default; set env var for live cloud WebSocket)
+export SPEECHMATICS_API_KEY="your_speechmatics_api_key"  # Linux / macOS
+# $env:SPEECHMATICS_API_KEY="your_speechmatics_api_key"  # Windows PowerShell
 python test/verify_speechmatics_live.py
 ```
 
@@ -52,7 +55,7 @@ python test/verify_speechmatics_live.py
 ================================================================================
 
 [*] Target WebSocket: wss://neu.rt.speechmatics.com/v2
-[*] API Key Present:  Lpv6...0cmF (Active)
+[*] API Key Present:  sm_key...[CONFIGURED] (Active)
 [+] WebSocket Handshake Established: 2794.66 ms
 [+] Server Response (1.24 ms): [Info]
     Quota/Session Status: 1 concurrent sessions active out of quota 2
@@ -275,6 +278,6 @@ Distributed under the MIT License. Developed for the **AI Infra Summit Hackathon
   title = {KINLOCK: Flight Envelope Protection for Bimanual VLA Robotics},
   year = {2026},
   publisher = {GitHub},
-  url = {https://github.com/GreatSage-dev/Null-float}
+  url = {https://github.com/GreatSage-dev/kinlock}
 }
 ```
