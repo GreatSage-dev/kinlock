@@ -638,7 +638,32 @@
       roughness: 0.15
     });
 
+    const matServoHub = new THREE.MeshStandardMaterial({
+      color: 0x1E293B,
+      metalness: 0.90,
+      roughness: 0.20
+    });
+
+    const matGripPads = new THREE.MeshStandardMaterial({
+      color: 0x0284C7,
+      metalness: 0.3,
+      roughness: 0.6,
+      emissive: 0x0284C7,
+      emissiveIntensity: 0.25
+    });
+
     const matLed = new THREE.MeshBasicMaterial({
+      color: 0x38BDF8
+    });
+
+    const matContactRing = new THREE.MeshBasicMaterial({
+      color: 0x38BDF8,
+      transparent: true,
+      opacity: 0.95,
+      side: THREE.DoubleSide
+    });
+
+    const matContactDot = new THREE.MeshBasicMaterial({
       color: 0x38BDF8
     });
 
@@ -679,47 +704,157 @@
     createBasePedestal(-BASE_SEPARATION_MM / 2.0);
     createBasePedestal( BASE_SEPARATION_MM / 2.0);
 
-    // Build Articulated SO-101 Visual Assemblies
+    // Build High-Fidelity SO-101 Robotic Arm Assemblies
     function buildRobotVisual(group, isLeft) {
       const joints = [];
       const links = [];
 
-      for (let i = 0; i < 5; i++) {
-        // Machined joint collar with glowing LED accent
-        const collarGroup = new THREE.Group();
-        const collar = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 12, 24), matCollar);
-        collar.rotation.z = Math.PI / 2;
-        collarGroup.add(collar);
+      // Joint 0: Base Turret Swivel
+      const j0 = new THREE.Group();
+      const turretDrum = new THREE.Mesh(new THREE.CylinderGeometry(24, 26, 18, 24), matServoHub);
+      j0.add(turretDrum);
+      const tRing = new THREE.Mesh(new THREE.TorusGeometry(24.2, 0.9, 8, 24), matLed);
+      tRing.rotation.x = Math.PI / 2;
+      j0.add(tRing);
+      group.add(j0);
+      joints.push(j0);
 
-        const ledRing = new THREE.Mesh(new THREE.TorusGeometry(15.2, 0.8, 8, 24), matLed);
-        ledRing.rotation.y = Math.PI / 2;
-        collarGroup.add(ledRing);
+      // Joint 1: Shoulder Pitch Actuator
+      const j1 = new THREE.Group();
+      const shoulderDrum = new THREE.Mesh(new THREE.CylinderGeometry(18, 18, 24, 24), matServoHub);
+      shoulderDrum.rotation.z = Math.PI / 2;
+      j1.add(shoulderDrum);
+      const sRing = new THREE.Mesh(new THREE.TorusGeometry(18.2, 1.0, 8, 24), matLed);
+      sRing.rotation.y = Math.PI / 2;
+      j1.add(sRing);
+      group.add(j1);
+      joints.push(j1);
 
-        group.add(collarGroup);
-        joints.push(collarGroup);
+      // Joint 2: PROMINENT ROBOTIC ELBOW KNUCKLE (Visible Outward Crook)
+      const j2 = new THREE.Group();
+      // Main high-torque servo actuator cylinder drum
+      const elbowDrum = new THREE.Mesh(new THREE.CylinderGeometry(22, 22, 28, 32), matServoHub);
+      elbowDrum.rotation.z = Math.PI / 2;
+      j2.add(elbowDrum);
+      // Outer machined servo horn caps
+      const horn1 = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 3, 20), matCollar);
+      horn1.rotation.z = Math.PI / 2;
+      horn1.position.x = 13.5;
+      j2.add(horn1);
+      const horn2 = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 3, 20), matCollar);
+      horn2.rotation.z = Math.PI / 2;
+      horn2.position.x = -13.5;
+      j2.add(horn2);
+      // Prominent Glowing Elbow Halo Ring
+      const elbowRing = new THREE.Mesh(new THREE.TorusGeometry(22.6, 1.8, 12, 32), matLed);
+      elbowRing.rotation.y = Math.PI / 2;
+      j2.add(elbowRing);
+      group.add(j2);
+      joints.push(j2);
 
-        // Anodized link arm
-        const link = new THREE.Mesh(new THREE.CylinderGeometry(8, 9, 1, 16), matAnodized);
-        group.add(link);
-        links.push(link);
-      }
+      // Joint 3: Wrist Pitch Knuckle
+      const j3 = new THREE.Group();
+      const wristDrum = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 20, 20), matServoHub);
+      wristDrum.rotation.z = Math.PI / 2;
+      j3.add(wristDrum);
+      const wRing = new THREE.Mesh(new THREE.TorusGeometry(15.2, 0.9, 8, 20), matLed);
+      wRing.rotation.y = Math.PI / 2;
+      j3.add(wRing);
+      group.add(j3);
+      joints.push(j3);
 
-      // Gripper head assembly
+      // Joint 4: Wrist Roll Collar
+      const j4 = new THREE.Group();
+      const flange = new THREE.Mesh(new THREE.CylinderGeometry(12, 14, 10, 16), matCollar);
+      j4.add(flange);
+      group.add(j4);
+      joints.push(j4);
+
+      // Link 0: Base riser
+      const l0 = new THREE.Mesh(new THREE.CylinderGeometry(16, 18, 1, 16), matAnodized);
+      group.add(l0);
+      links.push(l0);
+
+      // Link 1: Shoulder riser to bicep
+      const l1 = new THREE.Mesh(new THREE.CylinderGeometry(14, 16, 1, 16), matAnodized);
+      group.add(l1);
+      links.push(l1);
+
+      // Link 2: UPPER ARM (Bicep) - Sculpted Twin-Spar Industrial Robotic Beam
+      const l2Group = new THREE.Group();
+      const bicepBeam = new THREE.Mesh(new THREE.BoxGeometry(18, 1, 26), matAnodized);
+      l2Group.add(bicepBeam);
+      const bicepCollar = new THREE.Mesh(new THREE.BoxGeometry(20, 0.25, 28), matCollar);
+      l2Group.add(bicepCollar);
+      group.add(l2Group);
+      links.push(l2Group);
+
+      // Link 3: FOREARM - Tapering Ergonomic Robotic Arm Beam
+      const l3Group = new THREE.Group();
+      const forearmBeam = new THREE.Mesh(new THREE.BoxGeometry(16, 1, 24), matAnodized);
+      l3Group.add(forearmBeam);
+      const forearmRib = new THREE.Mesh(new THREE.BoxGeometry(18, 0.25, 25), matCollar);
+      l3Group.add(forearmRib);
+      group.add(l3Group);
+      links.push(l3Group);
+
+      // Link 4: Wrist to Gripper Mount
+      const l4 = new THREE.Mesh(new THREE.CylinderGeometry(11, 12, 1, 16), matCollar);
+      group.add(l4);
+      links.push(l4);
+
+      // PARALLEL JAW ROBOTIC GRIPPER & CONSTRAINT CONTACT POINT CLAMPS
       const gripGroup = new THREE.Group();
-      const gripBody = new THREE.Mesh(new THREE.BoxGeometry(22, 18, 30), matAnodized);
+
+      // Main Gripper Servo Actuator Housing
+      const gripBody = new THREE.Mesh(new THREE.BoxGeometry(26, 22, 26), matAnodized);
       gripGroup.add(gripBody);
 
-      const finger1 = new THREE.Mesh(new THREE.BoxGeometry(4, 14, 20), matCollar);
-      finger1.position.set(-8, 0, 16);
-      gripGroup.add(finger1);
+      // Upper Clamping Jaw (Reaches inward over the top face of the plate)
+      const jawUpper = new THREE.Mesh(new THREE.BoxGeometry(32, 6, 20), matCollar);
+      jawUpper.position.set(isLeft ? 14 : -14, 7, 0);
+      gripGroup.add(jawUpper);
 
-      const finger2 = new THREE.Mesh(new THREE.BoxGeometry(4, 14, 20), matCollar);
-      finger2.position.set(8, 0, 16);
-      gripGroup.add(finger2);
+      // Lower Clamping Jaw (Reaches inward under the bottom face of the plate)
+      const jawLower = new THREE.Mesh(new THREE.BoxGeometry(32, 6, 20), matCollar);
+      jawLower.position.set(isLeft ? 14 : -14, -7, 0);
+      gripGroup.add(jawLower);
 
+      // Silicone High-Friction Grip Contact Pads (Physical contact with acrylic workpiece)
+      const padUpper = new THREE.Mesh(new THREE.BoxGeometry(26, 2.5, 18), matGripPads);
+      padUpper.position.set(isLeft ? 14 : -14, 3.2, 0);
+      gripGroup.add(padUpper);
+
+      const padLower = new THREE.Mesh(new THREE.BoxGeometry(26, 2.5, 18), matGripPads);
+      padLower.position.set(isLeft ? 14 : -14, -3.2, 0);
+      gripGroup.add(padLower);
+
+      // VISIBLE CONSTRAINT CONTACT RETICLE / CIRCLE (Shows exact grasp anchor protected by KINLOCK)
+      const contactIndicatorGroup = new THREE.Group();
+      contactIndicatorGroup.position.set(0, 0, 0);
+
+      // Glowing circular target ring surrounding the grasp point
+      const contactCircle = new THREE.Mesh(new THREE.TorusGeometry(13, 1.3, 16, 32), matContactRing);
+      contactIndicatorGroup.add(contactCircle);
+
+      // Central target contact dot
+      const contactDot = new THREE.Mesh(new THREE.SphereGeometry(3, 16, 16), matContactDot);
+      contactIndicatorGroup.add(contactDot);
+
+      // Crosshair alignment brackets
+      const chGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-18, 0, 0), new THREE.Vector3(-14, 0, 0),
+        new THREE.Vector3(14, 0, 0), new THREE.Vector3(18, 0, 0),
+        new THREE.Vector3(0, -18, 0), new THREE.Vector3(0, -14, 0),
+        new THREE.Vector3(0, 14, 0), new THREE.Vector3(0, 18, 0)
+      ]);
+      const chTicks = new THREE.LineSegments(chGeo, matLaser);
+      contactIndicatorGroup.add(chTicks);
+
+      gripGroup.add(contactIndicatorGroup);
       group.add(gripGroup);
 
-      return { joints, links, grip: gripGroup };
+      return { joints, links, grip: gripGroup, contactReticle: contactIndicatorGroup };
     }
 
     const arm1Group = new THREE.Group();
@@ -731,56 +866,97 @@
     const arm2 = buildRobotVisual(arm2Group, false);
 
     function updateLink(mesh, pA, pB) {
-      const vA = new THREE.Vector3(pA[0], pA[2], -pA[1]);
-      const vB = new THREE.Vector3(pB[0], pB[2], -pB[1]);
-      const dir = new THREE.Vector3().subVectors(vB, vA);
-      mesh.position.copy(vA).addScaledVector(dir, 0.5);
-      mesh.scale.set(1, dir.length(), 1);
+      const dir = new THREE.Vector3().subVectors(pB, pA);
+      const len = dir.length();
+      mesh.position.copy(pA).addScaledVector(dir, 0.5);
+      mesh.scale.set(1, Math.max(0.01, len), 1);
       mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
     }
 
     function renderScene(q, isGoverned) {
-      const { ee1, ee2, chain1, chain2 } = forwardKinematicsBimanual(q);
+      const { ee1, ee2 } = forwardKinematicsBimanual(q);
 
-      for (let i = 0; i < 5; i++) {
-        arm1.joints[i].position.set(chain1[i][0], chain1[i][2], -chain1[i][1]);
-        updateLink(arm1.links[i], chain1[i], chain1[i+1]);
-
-        arm2.joints[i].position.set(chain2[i][0], chain2[i][2], -chain2[i][1]);
-        updateLink(arm2.links[i], chain2[i], chain2[i+1]);
-      }
-      arm1.grip.position.set(ee1[0], ee1[2], -ee1[1]);
-      arm2.grip.position.set(ee2[0], ee2[2], -ee2[1]);
-
+      // End-effector contact points in Three.js coordinates
       const v1 = new THREE.Vector3(ee1[0], ee1[2], -ee1[1]);
       const v2 = new THREE.Vector3(ee2[0], ee2[2], -ee2[1]);
       const center = new THREE.Vector3().addVectors(v1, v2).multiplyScalar(0.5);
       const spanVec = new THREE.Vector3().subVectors(v2, v1);
       const dist = spanVec.length();
 
+      // Workpiece transformation
       workpieceMesh.position.copy(center);
       workpieceMesh.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), spanVec.clone().normalize());
 
-      // Physical Strain & Visual Feedback
       const drift = Math.abs(dist - NOMINAL_DISTANCE_MM);
       const force = kEff * drift;
       const stretchX = dist / NOMINAL_DISTANCE_MM;
-      
       workpieceMesh.scale.set(stretchX, 1.0, 1.0);
       laserLine.geometry.setFromPoints([v1, v2]);
 
+      // Calculate Bimanual Kinematic Chains with PROMINENT OUTWARD ELBOW BENDS
+      // Arm 1 (Left Arm, base X = -200, reaches to v1)
+      const p1_0 = new THREE.Vector3(-BASE_SEPARATION_MM / 2.0, 0, 0);
+      const p1_1 = new THREE.Vector3(-BASE_SEPARATION_MM / 2.0, 65, 0);
+      const p1_2 = new THREE.Vector3(-228, 145, v1.z * 0.25);
+      // Elbow Knuckle: curves prominently OUTWARD to the left (X ~ -290)
+      const p1_3 = new THREE.Vector3(-290 + (v1.x - (-174.1)) * 0.6, 275 + (v1.y - 440) * 0.5, v1.z * 0.7 - 25);
+      // Wrist Knuckle: reaches back INWARD toward workpiece (X ~ -212)
+      const p1_4 = new THREE.Vector3(-212 + (v1.x - (-174.1)) * 0.8, 385 + (v1.y - 440) * 0.8, v1.z * 0.9);
+      const p1_5 = v1.clone();
+
+      const chainLeft = [p1_0, p1_1, p1_2, p1_3, p1_4, p1_5];
+
+      // Arm 2 (Right Arm, base X = +200, reaches to v2)
+      const p2_0 = new THREE.Vector3( BASE_SEPARATION_MM / 2.0, 0, 0);
+      const p2_1 = new THREE.Vector3( BASE_SEPARATION_MM / 2.0, 65, 0);
+      const p2_2 = new THREE.Vector3( 228, 145, v2.z * 0.25);
+      // Elbow Knuckle: curves prominently OUTWARD to the right (X ~ +290)
+      const p2_3 = new THREE.Vector3( 290 + (v2.x - 174.1) * 0.6, 275 + (v2.y - 440) * 0.5, v2.z * 0.7 - 25);
+      // Wrist Knuckle: reaches back INWARD toward workpiece (X ~ +212)
+      const p2_4 = new THREE.Vector3( 212 + (v2.x - 174.1) * 0.8, 385 + (v2.y - 440) * 0.8, v2.z * 0.9);
+      const p2_5 = v2.clone();
+
+      const chainRight = [p2_0, p2_1, p2_2, p2_3, p2_4, p2_5];
+
+      // Update Arm 1 (Left) Visuals
+      for (let i = 0; i < 5; i++) {
+        arm1.joints[i].position.copy(chainLeft[i]);
+        updateLink(arm1.links[i], chainLeft[i], chainLeft[i+1]);
+
+        arm2.joints[i].position.copy(chainRight[i]);
+        updateLink(arm2.links[i], chainRight[i], chainRight[i+1]);
+      }
+
+      // Orient Gripper Clamps to Clamp Inward onto Plate Edges
+      arm1.grip.position.copy(v1);
+      arm1.grip.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), spanVec.clone().normalize());
+
+      arm2.grip.position.copy(v2);
+      arm2.grip.quaternion.setFromUnitVectors(new THREE.Vector3(-1, 0, 0), spanVec.clone().negate().normalize());
+
+      // Reactive Lighting & Constraint Visual Feedback
       if (!isGoverned && force > 15.0) {
-        // Catastrophic Strain: Glowing Warning Red with Heat Emission
+        // Catastrophic Strain: Warning Red with Alarm Halo on Joint & Contact Reticles
         plateMat.emissive.setHex(0xFF3B30);
         plateMat.emissiveIntensity = Math.min(1.8, 0.4 + (force / 250.0));
         matLaser.color.setHex(0xFF3B30);
         matLed.color.setHex(0xFF3B30);
+        matContactRing.color.setHex(0xFF3B30);
+        matContactDot.color.setHex(0xFF3B30);
+        // Micro-jitter on contact reticles simulating mechanical clamp slip under destructive load
+        const jitter = (Math.random() - 0.5) * 1.5;
+        arm1.contactReticle.position.set(jitter, jitter, 0);
+        arm2.contactReticle.position.set(-jitter, jitter, 0);
       } else {
-        // Governed Nominal: Electric Blue & Cyan
+        // Governed Nominal: Crisp Electric Blue & Cyan (100% Firm Clamp)
         plateMat.emissive.setHex(0x2563EB);
         plateMat.emissiveIntensity = 0.35;
         matLaser.color.setHex(0x38BDF8);
         matLed.color.setHex(0x38BDF8);
+        matContactRing.color.setHex(0x38BDF8);
+        matContactDot.color.setHex(0x38BDF8);
+        arm1.contactReticle.position.set(0, 0, 0);
+        arm2.contactReticle.position.set(0, 0, 0);
       }
 
       return { dist, drift, force };
