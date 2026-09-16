@@ -532,9 +532,9 @@
     // Subtle atmospheric depth fog
     scene.fog = new THREE.FogExp2(0x010307, 0.0007);
 
-    // High precision Camera: Frame centered at Y=360 (the robotic grasping workspace)
+    // High precision Camera: Framed to showcase full robot bases and workpiece above HUD
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 5000);
-    camera.position.set(0, 480, 780);
+    camera.position.set(0, 360, 980);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -547,7 +547,7 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2 + 0.02;
-    controls.target.set(0, 360, 0);
+    controls.target.set(0, 200, 0);
 
     // Studio Lighting setup
     const hemiLight = new THREE.HemisphereLight(0x38BDF8, 0x010307, 0.45);
@@ -872,6 +872,17 @@
       sparkCtx.fillStyle = grad;
       sparkCtx.fill();
 
+      // Subtle 15N critical threshold line
+      const tripY = h - (15.0 / maxVal) * (h - 4) - 2;
+      sparkCtx.setLineDash([3, 3]);
+      sparkCtx.strokeStyle = 'rgba(255, 59, 48, 0.35)';
+      sparkCtx.lineWidth = 1 * window.devicePixelRatio;
+      sparkCtx.beginPath();
+      sparkCtx.moveTo(0, tripY);
+      sparkCtx.lineTo(w, tripY);
+      sparkCtx.stroke();
+      sparkCtx.setLineDash([]);
+
       // Line stroke
       sparkCtx.strokeStyle = isOverload ? '#FF3B30' : '#38BDF8';
       sparkCtx.lineWidth = 1.5 * window.devicePixelRatio;
@@ -1062,7 +1073,8 @@
             currentStep++;
             executeStep(currentStep);
           } else {
-            togglePlayback();
+            currentStep = 0;
+            executeStep(0);
           }
         }, 40);
       } else {
@@ -1088,13 +1100,13 @@
 
     function setCameraView(preset) {
       if (preset === 'front') {
-        camera.position.set(0, 480, 780);
-        controls.target.set(0, 360, 0);
+        camera.position.set(0, 360, 980);
+        controls.target.set(0, 200, 0);
       } else if (preset === 'top') {
-        camera.position.set(0, 950, 180);
-        controls.target.set(0, 360, 0);
+        camera.position.set(0, 1050, 150);
+        controls.target.set(0, 200, 0);
       } else if (preset === 'grasp') {
-        camera.position.set(0, 420, 460);
+        camera.position.set(0, 440, 520);
         controls.target.set(0, 380, 0);
       }
       controls.update();
