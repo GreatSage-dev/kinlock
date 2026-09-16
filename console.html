@@ -20,22 +20,14 @@
         extend: {
           colors: {
             brandDark: '#010307',
-            cardBg: '#080B13',
+            cardBg: 'rgba(8, 12, 22, 0.72)',
             cardBorder: 'rgba(255, 255, 255, 0.08)',
             neonBlue: '#2563EB',
             electricCyan: '#38BDF8',
             accentGlow: 'rgba(37, 99, 235, 0.45)',
             textSub: '#94A3B8',
             textMuted: '#64748B',
-            void: '#010307',
-            panel: 'rgba(8, 12, 22, 0.72)',
-            hairline: 'rgba(255, 255, 255, 0.08)',
-            phosphor: '#38BDF8',
-            phosphorMuted: 'rgba(56, 189, 248, 0.15)',
-            alarm: '#FF3B30',
-            alarmMuted: 'rgba(255, 59, 48, 0.15)',
-            cyanGlaze: '#38BDF8',
-            steel: '#94A3B8'
+            alarm: '#FF3B30'
           },
           fontFamily: {
             mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
@@ -47,7 +39,7 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
     * {
       box-sizing: border-box;
@@ -67,111 +59,103 @@
       height: 100vh;
     }
 
-    /* Ambient Glow 1: Top-Right Volumetric Light Beam (Matching Landing Page) */
+    /* Volumetric Ambient Glows (Matching Landing Page) */
     .hero-glow-top {
       position: absolute;
-      top: 0;
-      right: 0;
-      width: 750px;
-      height: 650px;
+      top: -100px;
+      right: -100px;
+      width: 700px;
+      height: 600px;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle at 80% 10%, rgba(37, 99, 235, 0.45) 0%, rgba(14, 165, 233, 0.20) 35%, transparent 70%);
-      filter: blur(55px);
+      background: radial-gradient(circle at 75% 20%, rgba(37, 99, 235, 0.35) 0%, rgba(14, 165, 233, 0.15) 40%, transparent 70%);
+      filter: blur(65px);
+      animation: aurora-breathe 14s ease-in-out infinite alternate;
     }
 
-    /* Ambient Glow 2: Bottom Upward Radiating HUD Beam (Matching Landing Page) */
     .bottom-hud-glow {
       position: absolute;
-      bottom: 0;
+      bottom: -150px;
       left: 50%;
       transform: translateX(-50%);
-      width: 950px;
-      height: 450px;
+      width: 850px;
+      height: 400px;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(ellipse 800px 400px at 50% 100%, rgba(37, 99, 235, 0.40) 0%, rgba(14, 165, 233, 0.15) 45%, transparent 75%);
-      filter: blur(55px);
+      background: radial-gradient(ellipse 700px 350px at 50% 100%, rgba(37, 99, 235, 0.28) 0%, rgba(14, 165, 233, 0.10) 50%, transparent 75%);
+      filter: blur(60px);
     }
 
-    /* Exact Glass Island Architecture matching landing page cards */
+    @keyframes aurora-breathe {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1.0; transform: scale(1.1); }
+    }
+
+    /* Refined Micro Glass Island Architecture */
     .glass-island {
-      background: rgba(8, 12, 22, 0.72);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(8, 13, 24, 0.75);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
-                  0 20px 40px -15px rgba(0, 0, 0, 0.8);
-      border-radius: 20px;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                  0 16px 36px -10px rgba(0, 0, 0, 0.75);
+      border-radius: 14px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .glass-island:hover {
-      border-color: rgba(56, 189, 248, 0.3);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18),
-                  0 25px 50px -12px rgba(37, 99, 235, 0.25);
+      border-color: rgba(56, 189, 248, 0.25);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                  0 20px 45px -10px rgba(37, 99, 235, 0.2);
     }
 
-    /* Electric Blue Gradient Button (from index.html) */
+    /* Electric Blue Gradient Button */
     .btn-electric-blue {
       background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 20px rgba(37, 99, 235, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 0 16px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       transition: all 0.2s ease;
     }
     .btn-electric-blue:hover {
       background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
-      box-shadow: 0 0 30px rgba(37, 99, 235, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      transform: translateY(-1px);
-    }
-
-    /* Subtle Dark Pill Button (from index.html) */
-    .btn-dark-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition: all 0.2s ease;
-    }
-    .btn-dark-pill:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 24px rgba(37, 99, 235, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transform: translateY(-0.5px);
     }
 
     .tabular {
       font-variant-numeric: tabular-nums;
     }
 
-    /* Subdued Custom Scrubber */
+    /* Ultra-Slim Custom Scrubber */
     input[type=range].scrub-rail {
       -webkit-appearance: none;
-      background: rgba(255, 255, 255, 0.08);
-      height: 4px;
+      background: rgba(255, 255, 255, 0.09);
+      height: 3px;
       border-radius: 2px;
       outline: none;
     }
     input[type=range].scrub-rail::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: #38BDF8;
       cursor: pointer;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.8), 0 0 20px rgba(37, 99, 235, 0.5);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 18px rgba(37, 99, 235, 0.6);
       transition: transform 0.15s ease, background-color 0.15s ease;
     }
     input[type=range].scrub-rail::-webkit-slider-thumb:hover {
-      transform: scale(1.3);
+      transform: scale(1.35);
       background: #FFFFFF;
     }
 
-    /* CRT Analog Waveform Screen (Styled with Neon Blue Glow) */
+    /* CRT Analog Waveform Screen */
     .crt-screen {
       background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, rgba(1, 3, 7, 0.95) 100%);
-      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.18);
     }
 
-    /* Subtle pulsing radar status dot */
     @keyframes pulse-halo {
       0% { transform: scale(0.9); opacity: 0.8; }
       50% { transform: scale(1.4); opacity: 0.2; }
@@ -189,132 +173,136 @@
   <!-- LAYER 0: FULL-BLEED 3D WEBGL ENGINE VIEWPORT -->
   <div id="canvas-container" class="fixed inset-0 w-full h-full z-0 cursor-grab active:cursor-grabbing"></div>
 
-  <!-- LAYER 1: AMBIENT GLOWS (MATCHING LANDING PAGE) -->
+  <!-- LAYER 1: AMBIENT VOLUMETRIC GLOWS -->
   <div class="hero-glow-top"></div>
   <div class="bottom-hud-glow"></div>
 
-  <!-- LAYER 2: VIGNETTE & SUBTLE CINEMATIC OVERLAY -->
-  <div class="fixed inset-0 pointer-events-none z-[2] bg-[radial-gradient(circle_at_center,transparent_45%,rgba(1,3,7,0.75)_100%)]"></div>
+  <!-- LAYER 2: CINEMATIC RADIAL VIGNETTE -->
+  <div class="fixed inset-0 pointer-events-none z-[2] bg-[radial-gradient(circle_at_center,transparent_55%,rgba(1,3,7,0.72)_100%)]"></div>
 
-  <!-- LAYER 3: SPATIAL HUD ARCHITECTURE (POINTER EVENTS CONTAINER) -->
-  <div class="fixed inset-0 z-10 pointer-events-none p-6 sm:p-8 flex flex-col justify-between">
+  <!-- LAYER 3: SPATIAL HUD ARCHITECTURE -->
+  <div class="fixed inset-0 z-10 pointer-events-none p-4 sm:p-5 flex flex-col justify-between">
 
-    <!-- TOP FLOATING COMMAND BAR -->
-    <header class="flex items-center justify-between pointer-events-auto">
+    <!-- TOP FLOATING COMMAND BAR (Streamlined & Symmetrical) -->
+    <header class="flex items-center justify-between pointer-events-auto gap-3">
       
-      <!-- Brand & Standard Pill (Matching Landing Page Logo) -->
-      <div class="glass-island px-4 py-2.5 flex items-center space-x-3.5">
-        <div class="h-7 w-7 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
-          <i data-lucide="shield" class="w-4 h-4"></i>
+      <!-- Brand & Standard Capsule -->
+      <div class="glass-island px-3.5 py-2 flex items-center space-x-3">
+        <div class="h-6 w-6 rounded-md bg-blue-600/25 border border-blue-500/40 flex items-center justify-center text-cyan-400">
+          <i data-lucide="shield" class="w-3.5 h-3.5"></i>
         </div>
-        <div class="flex items-center space-x-2.5">
-          <span class="font-extrabold text-xs tracking-tight text-white">KINLOCK</span>
-          <span class="text-slate-500 font-mono text-[11px]">/</span>
-          <span class="text-[10px] font-mono tracking-widest uppercase text-slate-400">FEP FLIGHT GOVERNOR</span>
+        <div class="flex items-center space-x-2">
+          <span class="font-extrabold text-[12px] tracking-tight text-white">KINLOCK</span>
+          <span class="text-slate-500 font-mono text-[10px]">/</span>
+          <span class="text-[9px] font-mono tracking-widest uppercase text-slate-400 font-medium">FLIGHT GOVERNOR</span>
         </div>
-        <div class="h-3.5 w-px bg-white/10"></div>
-        <div class="flex items-center space-x-1.5">
+        <div class="h-3 w-px bg-white/10"></div>
+        <div class="flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">
           <span class="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-          <span class="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider">ISO 13849 SIL-2</span>
+          <span class="text-[9px] font-mono text-cyan-300 font-semibold tracking-wider">ISO 13849 PL-d SIL-2</span>
         </div>
       </div>
 
-      <!-- Center Status Beacon: Live Flight Envelope Safety State -->
-      <div id="status-beacon" class="hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-blue-500/30">
+      <!-- Center Status Beacon: Live Flight Envelope State -->
+      <div id="status-beacon" class="hidden md:flex glass-island px-4 py-2 items-center space-x-2.5 border-blue-500/25">
         <span class="relative flex h-2 w-2">
           <span id="status-beacon-halo" class="halo-beacon absolute inline-flex h-full w-full rounded-full bg-cyan-400"></span>
           <span id="status-beacon-dot" class="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
         </span>
-        <span id="status-beacon-text" class="text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase">
+        <span id="status-beacon-text" class="text-[10px] font-mono font-bold tracking-wider text-cyan-300 uppercase">
           NULL-SPACE PROJECTION NOMINAL
         </span>
-        <span class="text-[10px] font-mono text-slate-400">(LeRobot #3154 Clamped)</span>
+        <span class="text-[9px] font-mono text-slate-400">(LeRobot #3154 Clamped)</span>
       </div>
 
-      <!-- Top Right: Camera Presets & Links -->
-      <div class="glass-island p-1.5 flex items-center space-x-1.5 text-xs font-mono">
-        <button onclick="setCameraView('front')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Front</button>
-        <button onclick="setCameraView('top')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Top</button>
-        <button onclick="setCameraView('grasp')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Grasp</button>
-        <button id="btn-orbit" onclick="toggleAutoRotate()" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition text-[11px]">Orbit: Off</button>
-        <div class="h-3.5 w-px bg-white/10 mx-1"></div>
-        <a href="index.html" class="px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-100 text-black font-semibold transition text-[11px] flex items-center space-x-1.5 shadow-sm">
-          <span>Dossier</span>
+      <!-- Top Right: Camera Presets & Navigation -->
+      <div class="glass-island p-1 flex items-center space-x-1 text-xs font-mono">
+        <button onclick="setCameraView('front')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-white/5 transition text-[10px] font-medium">Front</button>
+        <button onclick="setCameraView('top')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-white/5 transition text-[10px] font-medium">Top</button>
+        <button onclick="setCameraView('grasp')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-white/5 transition text-[10px] font-medium">Grasp</button>
+        <button id="btn-orbit" onclick="toggleAutoRotate()" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-white/5 transition text-[10px] font-medium">Orbit: Off</button>
+        <div class="h-3 w-px bg-white/10 mx-0.5"></div>
+        <a href="/" class="px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-black font-semibold transition text-[10px] flex items-center space-x-1 shadow-sm">
+          <span>Landing Page</span>
           <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
       </div>
 
     </header>
 
-    <!-- CENTER VIEWPORT IS COMPLETELY UNOBSTRUCTED (75% BREATHING ROOM) -->
+    <!-- CENTER VIEWPORT (Unobstructed Breathing Room for 3D Robotic Digital Twin) -->
     <div class="flex-1"></div>
 
-    <!-- BOTTOM FLOATING HUD ROW -->
-    <div class="flex flex-col lg:flex-row items-end lg:items-end justify-between gap-6 pointer-events-none">
+    <!-- BOTTOM FLOATING HUD DOCK (Compact, Symmetrical, Professional) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-end pointer-events-none">
 
-      <!-- LEFT FLOATING TELEMETRY ISLAND: HERO METRIC -->
-      <div class="glass-island p-6 w-full sm:w-84 pointer-events-auto space-y-4">
+      <!-- LEFT TELEMETRY MODULE (col-span-3) -->
+      <div class="lg:col-span-3 glass-island p-4 pointer-events-auto space-y-3">
         
         <!-- Header -->
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase font-semibold">Internal Tensile Strain</span>
-          <span id="trip-badge" class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold">
-            &le; 15.0 N LIMIT
+          <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase font-semibold">Internal Tensile Strain</span>
+          <span id="trip-badge" class="text-[8.5px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold">
+            &le; 15.0 N CLAMP
           </span>
         </div>
 
         <!-- Hero Metric Number -->
         <div class="flex items-baseline space-x-2">
-          <span id="hero-force-num" class="text-4xl sm:text-5xl font-extrabold font-mono text-cyan-400 tracking-tight tabular">0.02</span>
-          <span class="text-base font-mono text-slate-400">N</span>
-          <span id="hero-force-sub" class="text-xs font-mono text-slate-400 ml-auto tabular">(100% Attenuation)</span>
+          <span id="hero-force-num" class="text-3xl sm:text-4xl font-extrabold font-mono text-cyan-400 tracking-tight tabular">0.02</span>
+          <span class="text-xs font-mono text-slate-400">N</span>
+          <span id="hero-force-sub" class="text-[10px] font-mono text-cyan-400/90 ml-auto tabular font-medium">100% Attenuation</span>
         </div>
 
-        <!-- Micro Sparkline & Span Metric -->
-        <div class="space-y-2 pt-2 border-t border-white/5">
-          <div class="h-10 w-full bg-black/50 rounded-lg overflow-hidden relative border border-white/5">
-            <canvas id="sparklineCanvas" class="w-full h-full"></canvas>
+        <!-- Micro Sparkline -->
+        <div class="h-7 w-full bg-black/40 rounded-lg overflow-hidden relative border border-white/5">
+          <canvas id="sparklineCanvas" class="w-full h-full"></canvas>
+        </div>
+        
+        <!-- Two-column Telemetry Readout -->
+        <div class="grid grid-cols-2 gap-1.5 pt-2 border-t border-white/5 text-[10px] font-mono">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Span:</span>
+            <span id="metric-span" class="text-white font-medium tabular">348.24 mm</span>
           </div>
-          
-          <div class="flex justify-between items-center text-[11px] font-mono">
-            <span class="text-slate-400">Grasp Span:</span>
-            <span id="metric-span" class="text-white font-semibold tabular">250.00 mm</span>
-            <span class="text-slate-600">|</span>
+          <div class="flex justify-between">
             <span class="text-slate-400">Drift:</span>
-            <span id="metric-drift" class="text-cyan-400 font-bold tabular">0.000 mm</span>
+            <span id="metric-drift" class="text-cyan-300 font-bold tabular">0.000 mm</span>
           </div>
-        </div>
-
-        <!-- Governor Latency Metric -->
-        <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1 border-t border-white/5">
-          <span>Projection Latency:</span>
-          <span id="metric-latency" class="text-blue-400 font-bold tabular">&lt; 0.1 ms (1,000 Hz)</span>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Latency:</span>
+            <span id="metric-latency" class="text-blue-400 font-bold tabular">&lt; 0.1 ms</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Loop Rate:</span>
+            <span class="text-slate-300 tabular">1,000 Hz</span>
+          </div>
         </div>
 
       </div>
 
-      <!-- CENTER FLOATING FLIGHT CONTROL DOCK -->
-      <div class="glass-island px-6 py-4 w-full lg:max-w-xl pointer-events-auto flex flex-col space-y-3.5 mx-auto">
+      <!-- CENTER MISSION CONTROL & SCRUBBER MODULE (col-span-5) -->
+      <div class="lg:col-span-5 glass-island p-4 pointer-events-auto flex flex-col space-y-3 mx-auto w-full">
         
-        <!-- Mode Switcher Pill -->
-        <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-black/60 border border-white/5">
-          <button id="btn-mode-unfiltered" onclick="setControlMode('UNFILTERED')" class="py-2 px-3 rounded-lg text-xs font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-2">
+        <!-- Segmented Mode Switcher Pill -->
+        <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-black/60 border border-white/5">
+          <button id="btn-mode-unfiltered" onclick="setControlMode('UNFILTERED')" class="py-1.5 px-2 rounded-lg text-[10.5px] font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-1.5">
             <span class="h-1.5 w-1.5 rounded-full bg-alarm"></span>
-            <span>UNFILTERED VLA (LeRobot #3154)</span>
+            <span>Unfiltered VLA (LeRobot #3154)</span>
           </button>
-          <button id="btn-mode-governed" onclick="setControlMode('GOVERNED')" class="py-2 px-3 rounded-lg text-xs font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-2">
+          <button id="btn-mode-governed" onclick="setControlMode('GOVERNED')" class="py-1.5 px-2 rounded-lg text-[10.5px] font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-1.5">
             <span class="h-1.5 w-1.5 rounded-full bg-cyan-300"></span>
-            <span>KINLOCK FEP GOVERNOR</span>
+            <span>KINLOCK FEP Governor</span>
           </button>
         </div>
 
-        <!-- Trajectory Timeline Scrubber -->
-        <div class="flex items-center space-x-4">
-          <button id="btn-play" onclick="togglePlayback()" class="h-9 w-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition shrink-0" title="Play/Pause (Space)">
-            <i id="icon-play" data-lucide="play" class="w-4 h-4 fill-current text-cyan-400"></i>
+        <!-- Trajectory Timeline Scrubber Row -->
+        <div class="flex items-center space-x-3 pt-0.5">
+          <button id="btn-play" onclick="togglePlayback()" class="h-8 w-8 rounded-lg bg-white/10 hover:bg-white/15 border border-white/15 flex items-center justify-center text-white transition shrink-0 shadow-sm" title="Play/Pause (Space)">
+            <i id="icon-play" data-lucide="play" class="w-3.5 h-3.5 fill-current text-cyan-400"></i>
           </button>
-          <button onclick="resetPlayback()" class="h-9 w-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition shrink-0" title="Reset (R)">
-            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <button onclick="resetPlayback()" class="h-8 w-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition shrink-0" title="Reset (R)">
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
           </button>
           
           <!-- Scrubber Track -->
@@ -322,13 +310,13 @@
             <input id="scrubber" type="range" min="0" max="150" value="0" class="scrub-rail w-full cursor-pointer" oninput="onScrub(this.value)">
             <div class="flex justify-between text-[9px] font-mono text-slate-400">
               <span id="step-display">STEP: 000 / 150</span>
-              <span>LeRobot Dataset (150 Chunks)</span>
+              <span>LeRobot Dataset Replay (150 Chunks)</span>
             </div>
           </div>
         </div>
 
-        <!-- Micro Drawer for Parameters -->
-        <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1 border-t border-white/5">
+        <!-- Technical Parameter Specs Ribbon -->
+        <div class="flex items-center justify-between text-[9px] font-mono text-slate-400 pt-1.5 border-t border-white/5">
           <span>&alpha; = 12.0 s⁻¹</span>
           <span class="text-slate-600">&bull;</span>
           <span>k_eff = 34.29 N/mm</span>
@@ -338,55 +326,55 @@
 
       </div>
 
-      <!-- RIGHT FLOATING ACOUSTIC REFLEX SCOPE -->
-      <div class="glass-island p-5 w-full sm:w-84 pointer-events-auto space-y-3.5">
+      <!-- RIGHT SPEECHMATICS ACOUSTIC REFLEX MODULE (col-span-4) -->
+      <div class="lg:col-span-4 glass-island p-4 pointer-events-auto space-y-2.5">
         
         <!-- Header -->
         <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <div class="h-2 w-2 rounded-full bg-cyan-400 halo-beacon"></div>
-            <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase font-semibold">Speechmatics Reflex</span>
+          <div class="flex items-center space-x-1.5">
+            <div class="h-1.5 w-1.5 rounded-full bg-cyan-400 halo-beacon"></div>
+            <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase font-semibold">Speechmatics Reflex</span>
           </div>
-          <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold">
+          <span class="text-[8.5px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold">
             Sub-50ms Brake
           </span>
         </div>
 
-        <!-- CRT Analog Scope -->
-        <div class="h-16 w-full rounded-xl crt-screen relative overflow-hidden flex items-center justify-center">
+        <!-- Compact CRT Analog Scope -->
+        <div class="h-11 w-full rounded-lg crt-screen relative overflow-hidden flex items-center justify-center">
           <canvas id="crtCanvas" class="w-full h-full"></canvas>
-          <div class="absolute bottom-1 right-2 text-[8px] font-mono text-cyan-400/70 tracking-wider">16kHz PCM STREAM</div>
+          <div class="absolute bottom-0.5 right-1.5 text-[7.5px] font-mono text-cyan-400/70 tracking-wider">16kHz PCM STREAM</div>
         </div>
 
-        <!-- Live Streaming Partials Transcript Feed -->
-        <div class="p-2.5 rounded-xl bg-black/50 border border-white/5 space-y-1">
-          <div class="flex justify-between text-[9px] font-mono text-slate-400">
-            <span>Streaming Tokens:</span>
-            <span id="live-mic-label" class="text-cyan-400 font-bold">Key: Active (neu.rt)</span>
+        <!-- Live Streaming Partials Feed -->
+        <div class="p-1.5 rounded-lg bg-black/40 border border-white/5 space-y-0.5">
+          <div class="flex justify-between text-[8.5px] font-mono text-slate-400">
+            <span>Partials:</span>
+            <span id="live-mic-label" class="text-cyan-400 font-medium">Cluster: neu.rt (16kHz)</span>
           </div>
-          <div id="transcript-feed" class="h-12 overflow-y-auto text-[10px] font-mono text-slate-300 space-y-0.5 leading-tight">
-            <div>&gt; WebSocket ready. Listening for abort phonemes...</div>
+          <div id="transcript-feed" class="h-7 overflow-y-auto text-[9.5px] font-mono text-slate-300 space-y-0.5 leading-tight">
+            <div>&gt; WebSocket ready. Monitoring acoustic phonemes...</div>
           </div>
         </div>
 
         <!-- Emergency Voice Triggers & Mic Input -->
-        <div class="space-y-1.5">
-          <div class="grid grid-cols-3 gap-1.5">
-            <button onclick="injectKeyword('STOP')" class="py-1.5 px-2 rounded-lg bg-alarm/20 hover:bg-alarm/30 border border-alarm/30 text-alarm font-mono text-[10px] font-bold transition flex items-center justify-center space-x-1">
-              <i data-lucide="octagon" class="w-3 h-3"></i>
+        <div class="space-y-1">
+          <div class="grid grid-cols-3 gap-1">
+            <button onclick="injectKeyword('STOP')" class="py-1 px-1.5 rounded-md bg-alarm/20 hover:bg-alarm/30 border border-alarm/30 text-alarm font-mono text-[9px] font-bold transition flex items-center justify-center space-x-1">
+              <i data-lucide="octagon" class="w-2.5 h-2.5"></i>
               <span>"STOP!"</span>
             </button>
-            <button onclick="injectKeyword('HALT')" class="py-1.5 px-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-300 font-mono text-[10px] font-bold transition flex items-center justify-center space-x-1">
-              <i data-lucide="hand" class="w-3 h-3"></i>
+            <button onclick="injectKeyword('HALT')" class="py-1 px-1.5 rounded-md bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-300 font-mono text-[9px] font-bold transition flex items-center justify-center space-x-1">
+              <i data-lucide="hand" class="w-2.5 h-2.5"></i>
               <span>"HALT!"</span>
             </button>
-            <button onclick="injectKeyword('RESUME')" class="py-1.5 px-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-cyan-300 font-mono text-[10px] font-bold transition flex items-center justify-center space-x-1">
-              <i data-lucide="play" class="w-3 h-3"></i>
+            <button onclick="injectKeyword('RESUME')" class="py-1 px-1.5 rounded-md bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-cyan-300 font-mono text-[9px] font-bold transition flex items-center justify-center space-x-1">
+              <i data-lucide="play" class="w-2.5 h-2.5"></i>
               <span>"RESUME"</span>
             </button>
           </div>
-          <button id="btn-mic" onclick="toggleMic()" class="w-full py-1.5 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-mono text-[10px] flex items-center justify-center space-x-1.5 transition">
-            <i data-lucide="mic" class="w-3 h-3 text-cyan-400"></i>
+          <button id="btn-mic" onclick="toggleMic()" class="w-full py-1 px-2 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-mono text-[9px] flex items-center justify-center space-x-1.5 transition">
+            <i data-lucide="mic" class="w-2.5 h-2.5 text-cyan-400"></i>
             <span id="btn-mic-text">Connect Browser Mic to Reflex</span>
           </button>
         </div>
@@ -402,10 +390,10 @@
     lucide.createIcons();
 
     /* ==========================================================================
-       KINEMATICS & GOVERNOR ENGINE (Analytical SO-101)
+       KINEMATICS & GOVERNOR ENGINE (Analytical SO-101 Model)
        ========================================================================== */
     const BASE_SEPARATION_MM = 400.0;
-    const NOMINAL_DISTANCE_MM = 250.0;
+    const NOMINAL_DISTANCE_MM = 348.24; // Calibrated to nominal initial grasp pose
     const L_BASE = 65.0;
     const L_UPPER = 125.0;
     const L_FOREARM = 135.0;
@@ -535,21 +523,20 @@
     }
 
     /* ==========================================================================
-       THREE.JS PBR 3D DIGITAL TWIN & PROCEDURAL RADIAL GRID
+       THREE.JS PBR 3D ROBOTIC DIGITAL TWIN & ARENA
        ========================================================================== */
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x010307);
 
-    // Fog for depth fading matching landing page pitch void
-    scene.fog = new THREE.FogExp2(0x010307, 0.0009);
+    // Subtle atmospheric depth fog
+    scene.fog = new THREE.FogExp2(0x010307, 0.0007);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 1, 4000);
-    camera.position.set(0, 320, 680);
+    // High precision Camera: Frame centered at Y=360 (the robotic grasping workspace)
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 5000);
+    camera.position.set(0, 480, 780);
 
-    // WebGL Renderer with High-Precision Tone Mapping
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -560,34 +547,32 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2 + 0.02;
-    controls.target.set(0, 160, 50);
+    controls.target.set(0, 360, 0);
 
-    // Studio Lighting matching landing page blue aurora atmosphere
+    // Studio Lighting setup
     const hemiLight = new THREE.HemisphereLight(0x38BDF8, 0x010307, 0.45);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
-    keyLight.position.set(250, 450, 200);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    keyLight.position.set(300, 500, 300);
     scene.add(keyLight);
 
-    // Left Rim Light: Deep Electric Blue (#2563EB)
-    const rimLightLeft = new THREE.PointLight(0x2563EB, 2.2, 800);
-    rimLightLeft.position.set(-300, 250, -100);
+    const rimLightLeft = new THREE.PointLight(0x2563EB, 2.4, 1000);
+    rimLightLeft.position.set(-350, 350, -150);
     scene.add(rimLightLeft);
 
-    // Right Rim Light: Electric Cyan (#38BDF8)
-    const rimLightRight = new THREE.PointLight(0x38BDF8, 2.0, 800);
-    rimLightRight.position.set(300, 250, -100);
+    const rimLightRight = new THREE.PointLight(0x38BDF8, 2.2, 1000);
+    rimLightRight.position.set(350, 350, -150);
     scene.add(rimLightRight);
 
-    // Infinite Radial Floor Grid (Shader Falloff with Neon Blue Tint)
-    const gridGeometry = new THREE.PlaneGeometry(1600, 1600, 64, 64);
+    // Infinite Radial Floor Grid (Shader Falloff)
+    const gridGeometry = new THREE.PlaneGeometry(2400, 2400, 64, 64);
     const gridShaderMat = new THREE.ShaderMaterial({
       transparent: true,
       uniforms: {
-        uGridSize: { value: 30.0 },
+        uGridSize: { value: 40.0 },
         uLineWidth: { value: 0.8 },
-        uMaxRadius: { value: 700.0 }
+        uMaxRadius: { value: 900.0 }
       },
       vertexShader: `
         varying vec3 vWorldPos;
@@ -609,11 +594,11 @@
           float c = 1.0 - min(line, 1.0);
 
           float dist = length(vWorldPos.xz);
-          float alpha = exp(-pow(dist / (uMaxRadius * 0.55), 2.0));
+          float alpha = exp(-pow(dist / (uMaxRadius * 0.5), 2.0));
 
-          // Electric midnight blue floor grid lines
-          vec3 gridColor = vec3(0.09, 0.18, 0.38);
-          gl_FragColor = vec4(gridColor, c * alpha * 0.45);
+          // Electric deep blue floor grid
+          vec3 gridColor = vec3(0.08, 0.16, 0.35);
+          gl_FragColor = vec4(gridColor, c * alpha * 0.40);
         }
       `
     });
@@ -622,19 +607,39 @@
     floorMesh.position.y = 0;
     scene.add(floorMesh);
 
-    // PBR Materials (Anodized Gunmetal Aluminum)
+    // Concentric Calibration Rings on Floor
+    function createCalibrationRings() {
+      const ringGroup = new THREE.Group();
+      const ringRadii = [150, 300, 450];
+      ringRadii.forEach(r => {
+        const ringGeo = new THREE.RingGeometry(r - 0.7, r + 0.7, 64);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x1E3A8A, transparent: true, opacity: 0.35, side: THREE.DoubleSide });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.rotation.x = -Math.PI / 2;
+        ringMesh.position.y = 0.5;
+        ringGroup.add(ringMesh);
+      });
+      scene.add(ringGroup);
+    }
+    createCalibrationRings();
+
+    // PBR Materials for SO-101 Articulated Arms
     const matAnodized = new THREE.MeshPhysicalMaterial({
-      color: 0x1E293B,
-      metalness: 0.88,
-      roughness: 0.22,
-      clearcoat: 0.25,
-      clearcoatRoughness: 0.1
+      color: 0x0F172A,
+      metalness: 0.90,
+      roughness: 0.25,
+      clearcoat: 0.3,
+      clearcoatRoughness: 0.15
     });
 
     const matCollar = new THREE.MeshStandardMaterial({
-      color: 0x64748B,
+      color: 0x475569,
       metalness: 0.95,
       roughness: 0.15
+    });
+
+    const matLed = new THREE.MeshBasicMaterial({
+      color: 0x38BDF8
     });
 
     const matLaser = new THREE.LineBasicMaterial({
@@ -644,14 +649,18 @@
       opacity: 0.85
     });
 
-    // Workpiece (Subdivided plate that bows dynamically on drift)
-    const plateGeo = new THREE.BoxGeometry(250, 14, 75, 20, 2, 2);
+    // Workpiece (Refined Polycarbonate/Acrylic Slab with Subsurface Lighting)
+    // Nominal dimensions: 348mm span, 8mm thickness, 45mm depth
+    const plateGeo = new THREE.BoxGeometry(348, 8, 45, 24, 2, 2);
     const plateMat = new THREE.MeshPhysicalMaterial({
-      color: 0x080F1E,
-      metalness: 0.4,
-      roughness: 0.3,
+      color: 0x060D1A,
+      metalness: 0.2,
+      roughness: 0.15,
+      transmission: 0.4,
+      transparent: true,
+      opacity: 0.92,
       emissive: 0x2563EB,
-      emissiveIntensity: 0.25
+      emissiveIntensity: 0.3
     });
     const workpieceMesh = new THREE.Mesh(plateGeo, plateMat);
     scene.add(workpieceMesh);
@@ -659,17 +668,35 @@
     const laserLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]), matLaser);
     scene.add(laserLine);
 
+    // Pedestals for Robot Bases
+    function createBasePedestal(xPos) {
+      const pedGeo = new THREE.CylinderGeometry(40, 48, 12, 32);
+      const pedMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.85, roughness: 0.3 });
+      const pedMesh = new THREE.Mesh(pedGeo, pedMat);
+      pedMesh.position.set(xPos, 6, 0);
+      scene.add(pedMesh);
+    }
+    createBasePedestal(-BASE_SEPARATION_MM / 2.0);
+    createBasePedestal( BASE_SEPARATION_MM / 2.0);
+
     // Build Articulated SO-101 Visual Assemblies
     function buildRobotVisual(group, isLeft) {
       const joints = [];
       const links = [];
 
       for (let i = 0; i < 5; i++) {
-        // Machined joint collar
-        const collar = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, 12, 24), matCollar);
+        // Machined joint collar with glowing LED accent
+        const collarGroup = new THREE.Group();
+        const collar = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 12, 24), matCollar);
         collar.rotation.z = Math.PI / 2;
-        group.add(collar);
-        joints.push(collar);
+        collarGroup.add(collar);
+
+        const ledRing = new THREE.Mesh(new THREE.TorusGeometry(15.2, 0.8, 8, 24), matLed);
+        ledRing.rotation.y = Math.PI / 2;
+        collarGroup.add(ledRing);
+
+        group.add(collarGroup);
+        joints.push(collarGroup);
 
         // Anodized link arm
         const link = new THREE.Mesh(new THREE.CylinderGeometry(8, 9, 1, 16), matAnodized);
@@ -677,11 +704,22 @@
         links.push(link);
       }
 
-      // Gripper head
-      const grip = new THREE.Mesh(new THREE.BoxGeometry(24, 20, 36), matAnodized);
-      group.add(grip);
+      // Gripper head assembly
+      const gripGroup = new THREE.Group();
+      const gripBody = new THREE.Mesh(new THREE.BoxGeometry(22, 18, 30), matAnodized);
+      gripGroup.add(gripBody);
 
-      return { joints, links, grip };
+      const finger1 = new THREE.Mesh(new THREE.BoxGeometry(4, 14, 20), matCollar);
+      finger1.position.set(-8, 0, 16);
+      gripGroup.add(finger1);
+
+      const finger2 = new THREE.Mesh(new THREE.BoxGeometry(4, 14, 20), matCollar);
+      finger2.position.set(8, 0, 16);
+      gripGroup.add(finger2);
+
+      group.add(gripGroup);
+
+      return { joints, links, grip: gripGroup };
     }
 
     const arm1Group = new THREE.Group();
@@ -723,7 +761,7 @@
       workpieceMesh.position.copy(center);
       workpieceMesh.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), spanVec.clone().normalize());
 
-      // Physical Spline Bowing simulation on high strain
+      // Physical Strain & Visual Feedback
       const drift = Math.abs(dist - NOMINAL_DISTANCE_MM);
       const force = kEff * drift;
       const stretchX = dist / NOMINAL_DISTANCE_MM;
@@ -734,13 +772,15 @@
       if (!isGoverned && force > 15.0) {
         // Catastrophic Strain: Glowing Warning Red with Heat Emission
         plateMat.emissive.setHex(0xFF3B30);
-        plateMat.emissiveIntensity = Math.min(1.5, 0.4 + (force / 300.0));
+        plateMat.emissiveIntensity = Math.min(1.8, 0.4 + (force / 250.0));
         matLaser.color.setHex(0xFF3B30);
+        matLed.color.setHex(0xFF3B30);
       } else {
         // Governed Nominal: Electric Blue & Cyan
         plateMat.emissive.setHex(0x2563EB);
         plateMat.emissiveIntensity = 0.35;
         matLaser.color.setHex(0x38BDF8);
+        matLed.color.setHex(0x38BDF8);
       }
 
       return { dist, drift, force };
@@ -766,31 +806,30 @@
     resizeCrt();
 
     function drawCrt() {
-      // Phosphor decay trail in deep void blue
-      crtCtx.fillStyle = 'rgba(1, 3, 7, 0.28)';
+      crtCtx.fillStyle = 'rgba(1, 3, 7, 0.32)';
       crtCtx.fillRect(0, 0, crtCanvas.width, crtCanvas.height);
 
       const w = crtCanvas.width;
       const h = crtCanvas.height;
       const mid = h / 2;
 
-      crtCtx.lineWidth = 1.5 * window.devicePixelRatio;
+      crtCtx.lineWidth = 1.6 * window.devicePixelRatio;
       crtCtx.strokeStyle = emergencyHalt ? '#FF3B30' : '#38BDF8';
       crtCtx.shadowColor = emergencyHalt ? '#FF3B30' : '#38BDF8';
       crtCtx.shadowBlur = 8;
       crtCtx.beginPath();
 
-      const points = 70;
+      const points = 60;
       for (let i = 0; i < points; i++) {
         const x = (i / (points - 1)) * w;
-        const amp = emergencyHalt ? (Math.random() * 20 + 8) : (Math.sin(i * 0.25 + crtPhase) * 10 + Math.random() * 3);
-        const y = mid + Math.sin(i * 0.35 + crtPhase) * amp;
+        const amp = emergencyHalt ? (Math.random() * 16 + 6) : (Math.sin(i * 0.28 + crtPhase) * 7 + Math.random() * 2);
+        const y = mid + Math.sin(i * 0.32 + crtPhase) * amp;
         if (i === 0) crtCtx.moveTo(x, y);
         else crtCtx.lineTo(x, y);
       }
       crtCtx.stroke();
       crtCtx.shadowBlur = 0;
-      crtPhase += emergencyHalt ? 0.35 : 0.08;
+      crtPhase += emergencyHalt ? 0.32 : 0.08;
     }
 
     /* ==========================================================================
@@ -810,14 +849,32 @@
       if (forceHistory.length < 2) return;
 
       const maxVal = Math.max(25.0, ...forceHistory);
+      const isOverload = controlMode === 'UNFILTERED' && forceHistory[forceHistory.length - 1] > maxAllowedForce;
 
-      sparkCtx.strokeStyle = controlMode === 'UNFILTERED' ? '#FF3B30' : '#38BDF8';
-      sparkCtx.lineWidth = 1.8 * window.devicePixelRatio;
+      const grad = sparkCtx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, isOverload ? 'rgba(255, 59, 48, 0.35)' : 'rgba(56, 189, 248, 0.35)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
+
       sparkCtx.beginPath();
-
       for (let i = 0; i < forceHistory.length; i++) {
         const x = (i / 150) * w;
-        const y = h - (forceHistory[i] / maxVal) * (h - 6) - 3;
+        const y = h - (forceHistory[i] / maxVal) * (h - 4) - 2;
+        if (i === 0) sparkCtx.moveTo(x, y);
+        else sparkCtx.lineTo(x, y);
+      }
+      sparkCtx.lineTo(w, h);
+      sparkCtx.lineTo(0, h);
+      sparkCtx.closePath();
+      sparkCtx.fillStyle = grad;
+      sparkCtx.fill();
+
+      // Line stroke
+      sparkCtx.strokeStyle = isOverload ? '#FF3B30' : '#38BDF8';
+      sparkCtx.lineWidth = 1.5 * window.devicePixelRatio;
+      sparkCtx.beginPath();
+      for (let i = 0; i < forceHistory.length; i++) {
+        const x = (i / 150) * w;
+        const y = h - (forceHistory[i] / maxVal) * (h - 4) - 2;
         if (i === 0) sparkCtx.moveTo(x, y);
         else sparkCtx.lineTo(x, y);
       }
@@ -834,8 +891,8 @@
     let controlMode = 'GOVERNED'; // 'UNFILTERED' or 'GOVERNED'
 
     const initialJoints = [
-      0.0, 0.45, -0.65, 0.20, 0.0, 0.0,
-      0.0, 0.45, -0.65, 0.20, 0.0, 0.0
+      0.35, 0.45, -0.65, 0.20, 0.0, 0.0,
+      -0.35, 0.45, -0.65, 0.20, 0.0, 0.0
     ];
     let jointPositions = [...initialJoints];
 
@@ -881,43 +938,45 @@
       const tripBadge = document.getElementById('trip-badge');
 
       if (controlMode === 'UNFILTERED' && force > maxAllowedForce) {
-        heroNum.className = "text-4xl sm:text-5xl font-extrabold font-mono text-alarm tracking-tight tabular";
-        beacon.className = "hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-alarm/30";
-        beaconText.className = "text-[11px] font-mono font-bold tracking-wider text-alarm uppercase";
-        beaconText.innerText = "CRITICAL STRAIN TRIP [LeRobot #3154 OVERLOAD]";
+        heroNum.className = "text-3xl sm:text-4xl font-extrabold font-mono text-alarm tracking-tight tabular";
+        beacon.className = "hidden md:flex glass-island px-4 py-2 items-center space-x-2.5 border-alarm/40";
+        beaconText.className = "text-[10px] font-mono font-bold tracking-wider text-alarm uppercase";
+        beaconText.innerText = "CRITICAL STRAIN TRIP (LeRobot #3154 OVERLOAD)";
         beaconHalo.className = "halo-beacon absolute inline-flex h-full w-full rounded-full bg-alarm";
         beaconDot.className = "relative inline-flex rounded-full h-2 w-2 bg-alarm";
-        tripBadge.className = "text-[9px] font-mono px-2 py-0.5 rounded bg-alarm/10 text-alarm border border-alarm/30 font-bold";
+        tripBadge.className = "text-[8.5px] font-mono px-2 py-0.5 rounded bg-alarm/10 text-alarm border border-alarm/30 font-bold";
         tripBadge.innerText = "OVERLOAD FAULT (> 15N)";
-        document.getElementById('hero-force-sub').innerText = "(Servo Stall Imminent)";
+        document.getElementById('hero-force-sub').innerText = "Servo Stall Imminent";
+        document.getElementById('hero-force-sub').className = "text-[10px] font-mono text-alarm ml-auto tabular font-medium";
       } else {
-        heroNum.className = "text-4xl sm:text-5xl font-extrabold font-mono text-cyan-400 tracking-tight tabular";
-        beacon.className = "hidden md:flex glass-island px-5 py-2 items-center space-x-3 border-blue-500/30";
-        beaconText.className = "text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase";
+        heroNum.className = "text-3xl sm:text-4xl font-extrabold font-mono text-cyan-400 tracking-tight tabular";
+        beacon.className = "hidden md:flex glass-island px-4 py-2 items-center space-x-2.5 border-blue-500/25";
+        beaconText.className = "text-[10px] font-mono font-bold tracking-wider text-cyan-300 uppercase";
         beaconText.innerText = "NULL-SPACE PROJECTION NOMINAL";
         beaconHalo.className = "halo-beacon absolute inline-flex h-full w-full rounded-full bg-cyan-400";
         beaconDot.className = "relative inline-flex rounded-full h-2 w-2 bg-cyan-400";
-        tripBadge.className = "text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold";
-        tripBadge.innerText = "≤ 15.0 N LIMIT";
-        document.getElementById('hero-force-sub').innerText = "(100% Attenuation)";
+        tripBadge.className = "text-[8.5px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-cyan-300 border border-blue-500/20 font-bold";
+        tripBadge.innerText = "≤ 15.0 N CLAMP";
+        document.getElementById('hero-force-sub').innerText = "100% Attenuation";
+        document.getElementById('hero-force-sub').className = "text-[10px] font-mono text-cyan-400/90 ml-auto tabular font-medium";
       }
 
       drawSparkline();
     }
 
     /* ==========================================================================
-       USER CONTROLS & INTERACTION
+       USER CONTROLS & INTERACTIONS
        ========================================================================== */
     function setControlMode(mode) {
       controlMode = mode;
       const bUnf = document.getElementById('btn-mode-unfiltered');
       const bGov = document.getElementById('btn-mode-governed');
       if (mode === 'UNFILTERED') {
-        bUnf.className = "py-2 px-3 rounded-lg text-xs font-mono bg-alarm/20 text-alarm border border-alarm/30 shadow-lg transition flex items-center justify-center space-x-2";
-        bGov.className = "py-2 px-3 rounded-lg text-xs font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-2";
+        bUnf.className = "py-1.5 px-2 rounded-lg text-[10.5px] font-mono bg-alarm/25 text-alarm border border-alarm/30 shadow-md transition flex items-center justify-center space-x-1.5 font-bold";
+        bGov.className = "py-1.5 px-2 rounded-lg text-[10.5px] font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-1.5";
       } else {
-        bGov.className = "py-2 px-3 rounded-lg text-xs font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-2";
-        bUnf.className = "py-2 px-3 rounded-lg text-xs font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-2";
+        bGov.className = "py-1.5 px-2 rounded-lg text-[10.5px] font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-1.5";
+        bUnf.className = "py-1.5 px-2 rounded-lg text-[10.5px] font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-1.5";
       }
     }
 
@@ -957,14 +1016,14 @@
 
     function setCameraView(preset) {
       if (preset === 'front') {
-        camera.position.set(0, 260, 640);
-        controls.target.set(0, 160, 0);
+        camera.position.set(0, 480, 780);
+        controls.target.set(0, 360, 0);
       } else if (preset === 'top') {
-        camera.position.set(0, 800, 40);
-        controls.target.set(0, 100, 0);
+        camera.position.set(0, 950, 180);
+        controls.target.set(0, 360, 0);
       } else if (preset === 'grasp') {
-        camera.position.set(0, 220, 280);
-        controls.target.set(0, 160, 0);
+        camera.position.set(0, 420, 460);
+        controls.target.set(0, 380, 0);
       }
       controls.update();
     }
@@ -973,7 +1032,7 @@
     function toggleAutoRotate() {
       isOrbit = !isOrbit;
       controls.autoRotate = isOrbit;
-      controls.autoRotateSpeed = 1.2;
+      controls.autoRotateSpeed = 1.0;
       document.getElementById('btn-orbit').innerText = `Orbit: ${isOrbit ? 'On' : 'Off'}`;
     }
 
@@ -1059,7 +1118,7 @@
       }
     }
 
-    // Keyboard Shortcuts
+    // Global Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
         e.preventDefault();
@@ -1084,6 +1143,7 @@
     }
     animate();
 
+    // Initial Execution
     executeStep(0);
   </script>
 </body>
