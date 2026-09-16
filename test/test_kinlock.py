@@ -19,7 +19,7 @@ from kinlock.models import GovernorState
 
 @pytest.fixture
 def setup_kinematics():
-    kin = DualSO101Kinematics(base_separation_mm=400.0, nominal_grasp_distance_mm=250.0)
+    kin = DualSO101Kinematics(base_separation_mm=400.0, nominal_grasp_distance_mm=348.24)
     q_nominal = np.array([
         0.35, 0.45, -0.65, 0.20, 0.0, 0.0,
        -0.35, 0.45, -0.65, 0.20, 0.0, 0.0

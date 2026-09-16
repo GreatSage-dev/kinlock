@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
@@ -10,7 +10,7 @@
   <!-- KaTeX for math rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}, {left: '$', right: '$', display: false}], throwOnError: false});"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -302,8 +302,8 @@
         <a href="#overview" class="hover:text-white transition">Overview</a>
         <a href="#architecture" class="hover:text-white transition">Architecture</a>
         <a href="#kinematics" class="hover:text-white transition">Kinematics</a>
-        <a href="#speechmatics" class="hover:text-white transition">Speechmatics</a>
         <a href="#audit" class="hover:text-white transition">Epistemic Audit</a>
+        <a href="#speechmatics" class="hover:text-white transition">Speechmatics</a>
       </div>
 
       <!-- Right Action Buttons -->
@@ -405,7 +405,7 @@
             <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
           </div>
           <div class="text-sm font-bold text-white">Dual SO-101 Servos</div>
-          <div class="text-xs text-slate-400 font-mono">Rigid 250mm Plate Invariant</div>
+          <div class="text-xs text-slate-400 font-mono">Rigid 348mm Plate Invariant</div>
           <div class="text-[10px] text-emerald-400 font-mono font-bold">Peak Force Clamped &le; 0.02 N</div>
         </div>
 
@@ -633,7 +633,7 @@
       <div class="p-3.5 rounded-xl bg-black/70 border border-blue-500/30 flex items-center justify-between">
         <div class="flex items-center space-x-2 text-xs font-mono text-blue-300">
           <i data-lucide="terminal" class="w-4 h-4 text-blue-400"></i>
-          <span>Target Kinematic Constraint: \(\|\mathbf{p}_{\text{ee}1} - \mathbf{p}_{\text{ee}2}\| = 250.00\text{ mm}\)</span>
+          <span>Target Kinematic Constraint: \(\|\mathbf{p}_{\text{ee}1} - \mathbf{p}_{\text{ee}2}\| = 348.24\text{ mm}\)</span>
         </div>
         <div class="h-6 w-6 rounded-lg bg-blue-600 flex items-center justify-center text-white">
           <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
@@ -783,7 +783,7 @@
   <!-- =========================================================================
        7. "Find your perfect plan" -> DEPLOYMENT & TRACK PROFILES
        ========================================================================= -->
-  <section class="relative py-28 px-6 sm:px-10 max-w-5xl mx-auto z-10">
+  <section id="speechmatics" class="relative py-28 px-6 sm:px-10 max-w-5xl mx-auto z-10">
     
     <div class="reveal-on-scroll text-center max-w-2xl mx-auto mb-12 space-y-3">
       <div class="inline-flex items-center px-3 py-1 rounded-full btn-dark-pill text-[11px] text-blue-400 font-mono">
@@ -951,7 +951,8 @@
         <div class="space-y-1.5 text-slate-400 text-[11px]">
           <div><a href="console.html" class="hover:text-white transition">3D Cockpit</a></div>
           <div><a href="https://github.com/GreatSage-dev/kinlock" target="_blank" class="hover:text-white transition">GitHub Source</a></div>
-          <div><a href="test/verify_kinlock.py" class="hover:text-white transition">Verify Receipts</a></div>
+          <div><a href="/api/verify" target="_blank" class="hover:text-white transition">JSON Live Receipt</a></div>
+          <div><a href="https://github.com/GreatSage-dev/kinlock/blob/main/test/verify_kinlock.py" target="_blank" class="hover:text-white transition">Verify Script</a></div>
         </div>
       </div>
 
@@ -1059,6 +1060,7 @@
     }, { threshold: 0.5 });
 
     if (metricElem) metricObserver.observe(metricElem);
+    onLandingDriftChange(59.3);
   </script>
 </body>
 </html>

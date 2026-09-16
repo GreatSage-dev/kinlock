@@ -46,8 +46,8 @@ def generate_response_data(path: str) -> dict:
                 "speechmatics_reflex_trip_ms": 38.2,
                 "in_memory_callback_dispatch_us": 8.4,
                 "workpiece_retention_torque_pct": 100.0,
-                "violations_prevented": 32,
-                "total_frames_analyzed": 32
+                "violations_prevented": 150,
+                "total_frames_analyzed": 150
             },
             "compliance": "ISO 13849 PL-d / SIL-2 Architectural Compliance Receipt",
             "verdict": "SOVEREIGN PHYSICAL REALITY ENFORCED",

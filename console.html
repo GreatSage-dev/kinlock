@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
@@ -222,7 +222,7 @@
         <button onclick="setCameraView('grasp')" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-white/5 transition text-[10px] font-medium">Grasp</button>
         <button id="btn-orbit" onclick="toggleAutoRotate()" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-white/5 transition text-[10px] font-medium">Orbit: Off</button>
         <div class="h-3 w-px bg-white/10 mx-0.5"></div>
-        <a href="/" class="px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-black font-semibold transition text-[10px] flex items-center space-x-1 shadow-sm">
+        <a href="index.html" class="px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-black font-semibold transition text-[10px] flex items-center space-x-1 shadow-sm">
           <span>Landing Page</span>
           <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
@@ -307,7 +307,7 @@
           
           <!-- Scrubber Track -->
           <div class="flex-1 flex flex-col justify-center space-y-1">
-            <input id="scrubber" type="range" min="0" max="150" value="0" class="scrub-rail w-full cursor-pointer" oninput="onScrub(this.value)">
+            <input id="scrubber" type="range" min="0" max="149" value="0" class="scrub-rail w-full cursor-pointer" oninput="onScrub(this.value)">
             <div class="flex justify-between text-[9px] font-mono text-slate-400">
               <span id="step-display">STEP: 000 / 150</span>
               <span>LeRobot Dataset Replay (150 Chunks)</span>
@@ -321,7 +321,7 @@
           <span class="text-slate-600">&bull;</span>
           <span>k_eff = 34.29 N/mm</span>
           <span class="text-slate-600">&bull;</span>
-          <span>Hotkeys: Space (Play) | S (Stop) | R (Reset)</span>
+          <span>Hotkeys: Space (Play) | S (Stop) | R (Reset) | M (Mode)</span>
         </div>
 
       </div>
@@ -837,7 +837,7 @@
        ========================================================================== */
     const sparkCanvas = document.getElementById('sparklineCanvas');
     const sparkCtx = sparkCanvas.getContext('2d');
-    let forceHistory = [];
+    let forceHistory = [0.02, 0.02, 0.02, 0.02];
 
     function drawSparkline() {
       sparkCanvas.width = sparkCanvas.clientWidth * window.devicePixelRatio;
@@ -849,20 +849,24 @@
       if (forceHistory.length < 2) return;
 
       const maxVal = Math.max(25.0, ...forceHistory);
-      const isOverload = controlMode === 'UNFILTERED' && forceHistory[forceHistory.length - 1] > maxAllowedForce;
+      const lastForce = forceHistory[forceHistory.length - 1];
+      const isOverload = controlMode === 'UNFILTERED' && lastForce > maxAllowedForce;
 
       const grad = sparkCtx.createLinearGradient(0, 0, 0, h);
       grad.addColorStop(0, isOverload ? 'rgba(255, 59, 48, 0.35)' : 'rgba(56, 189, 248, 0.35)');
       grad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
 
+      const count = forceHistory.length;
+      const lastX = Math.min(w, ((count - 1) / 149) * w);
+
       sparkCtx.beginPath();
-      for (let i = 0; i < forceHistory.length; i++) {
-        const x = (i / 150) * w;
+      for (let i = 0; i < count; i++) {
+        const x = (i / 149) * w;
         const y = h - (forceHistory[i] / maxVal) * (h - 4) - 2;
         if (i === 0) sparkCtx.moveTo(x, y);
         else sparkCtx.lineTo(x, y);
       }
-      sparkCtx.lineTo(w, h);
+      sparkCtx.lineTo(lastX, h);
       sparkCtx.lineTo(0, h);
       sparkCtx.closePath();
       sparkCtx.fillStyle = grad;
@@ -872,8 +876,8 @@
       sparkCtx.strokeStyle = isOverload ? '#FF3B30' : '#38BDF8';
       sparkCtx.lineWidth = 1.5 * window.devicePixelRatio;
       sparkCtx.beginPath();
-      for (let i = 0; i < forceHistory.length; i++) {
-        const x = (i / 150) * w;
+      for (let i = 0; i < count; i++) {
+        const x = (i / 149) * w;
         const y = h - (forceHistory[i] / maxVal) * (h - 4) - 2;
         if (i === 0) sparkCtx.moveTo(x, y);
         else sparkCtx.lineTo(x, y);
@@ -899,32 +903,95 @@
     let emergencyHalt = false;
     let haltStartTime = 0;
 
+    // Precompute baseline trajectories for 60FPS instantaneous O(1) scrubbing
+    const precomputedGoverned = [];
+    const precomputedUnfiltered = [];
+
+    function initPrecomputedTrajectories() {
+      let qGov = [...initialJoints];
+      let qUnf = [...initialJoints];
+
+      for (let s = 0; s < trajectoryData.length; s++) {
+        const chunk = trajectoryData[s];
+        const qDot = chunk.q_dot;
+
+        // Governed path (analytical Moore-Penrose null space projection)
+        const proj = projectAction(qGov, qDot, 0.01);
+        for (let i = 0; i < 12; i++) qGov[i] += proj.qDotSafe[i] * 0.01;
+        const stateGov = computeConstraintMatrix(qGov);
+        const driftGov = Math.abs(stateGov.dist - NOMINAL_DISTANCE_MM);
+        precomputedGoverned.push({
+          q: [...qGov],
+          dist: stateGov.dist,
+          drift: driftGov,
+          force: kEff * driftGov,
+          latencyUs: proj.latencyUs
+        });
+
+        // Unfiltered path (demonstrating LeRobot #3154 failure)
+        for (let i = 0; i < 12; i++) qUnf[i] += qDot[i] * 0.01;
+        const stateUnf = computeConstraintMatrix(qUnf);
+        const driftUnf = Math.abs(stateUnf.dist - NOMINAL_DISTANCE_MM);
+        precomputedUnfiltered.push({
+          q: [...qUnf],
+          dist: stateUnf.dist,
+          drift: driftUnf,
+          force: kEff * driftUnf,
+          latencyUs: 0.08
+        });
+      }
+    }
+    initPrecomputedTrajectories();
+
     function executeStep(idx) {
       if (!trajectoryData || trajectoryData.length === 0) return;
-      const chunk = trajectoryData[Math.min(idx, trajectoryData.length - 1)];
-      let qDot = [...chunk.q_dot];
+      const targetIdx = Math.min(idx, trajectoryData.length - 1);
+      currentStep = targetIdx;
 
-      // Active Admittance exponential decay if acoustic abort latched
-      if (emergencyHalt) {
+      let dist, drift, force, latencyUs;
+
+      if (!emergencyHalt) {
+        const activeTrajectory = (controlMode === 'GOVERNED') ? precomputedGoverned : precomputedUnfiltered;
+        const stepData = activeTrajectory[targetIdx];
+        jointPositions = [...stepData.q];
+        dist = stepData.dist;
+        drift = stepData.drift;
+        force = stepData.force;
+        latencyUs = stepData.latencyUs;
+
+        const rendered = renderScene(jointPositions, controlMode === 'GOVERNED');
+        dist = rendered.dist;
+        drift = rendered.drift;
+        force = rendered.force;
+
+        // Mirror history up to current step
+        forceHistory = activeTrajectory.slice(0, targetIdx + 1).map(s => s.force);
+        if (forceHistory.length === 0) forceHistory = [0.02, 0.02, 0.02, 0.02];
+      } else {
+        // Active Admittance exponential decay during acoustic abort
+        const chunk = trajectoryData[targetIdx];
+        let qDot = [...chunk.q_dot];
         const elapsed = (Date.now() - haltStartTime) / 1000.0;
         const factor = Math.exp(-12.0 * elapsed);
         for (let i = 0; i < 12; i++) qDot[i] *= factor;
+
+        const proj = projectAction(jointPositions, qDot, 0.01);
+        const activeQDot = (controlMode === 'UNFILTERED') ? qDot : proj.qDotSafe;
+        for (let i = 0; i < 12; i++) jointPositions[i] += activeQDot[i] * 0.01;
+
+        const rendered = renderScene(jointPositions, controlMode === 'GOVERNED');
+        dist = rendered.dist;
+        drift = rendered.drift;
+        force = rendered.force;
+        latencyUs = proj.latencyUs;
+
+        forceHistory.push(force);
+        if (forceHistory.length > 150) forceHistory.shift();
       }
-
-      const proj = projectAction(jointPositions, qDot, 0.01);
-      const activeQDot = (controlMode === 'UNFILTERED') ? qDot : proj.qDotSafe;
-
-      for (let i = 0; i < 12; i++) {
-        jointPositions[i] += activeQDot[i] * 0.01;
-      }
-
-      const { dist, drift, force } = renderScene(jointPositions, controlMode === 'GOVERNED');
-      forceHistory.push(force);
-      if (forceHistory.length > 150) forceHistory.shift();
 
       // Update Telemetry
-      document.getElementById('step-display').innerText = `STEP: ${String(idx + 1).padStart(3, '0')} / 150`;
-      document.getElementById('scrubber').value = idx;
+      document.getElementById('step-display').innerText = `STEP: ${String(targetIdx + 1).padStart(3, '0')} / 150`;
+      document.getElementById('scrubber').value = targetIdx;
 
       document.getElementById('hero-force-num').innerText = force.toFixed(2);
       document.getElementById('metric-span').innerText = `${dist.toFixed(2)} mm`;
@@ -978,9 +1045,14 @@
         bGov.className = "py-1.5 px-2 rounded-lg text-[10.5px] font-mono btn-electric-blue text-white font-bold transition flex items-center justify-center space-x-1.5";
         bUnf.className = "py-1.5 px-2 rounded-lg text-[10.5px] font-mono text-slate-400 hover:text-white transition flex items-center justify-center space-x-1.5";
       }
+      executeStep(currentStep);
     }
 
     function togglePlayback() {
+      if (!isPlaying && currentStep >= trajectoryData.length - 1) {
+        currentStep = 0;
+        executeStep(0);
+      }
       isPlaying = !isPlaying;
       const pIcon = document.getElementById('icon-play');
       if (isPlaying) {
@@ -1004,7 +1076,7 @@
       if (isPlaying) togglePlayback();
       currentStep = 0;
       jointPositions = [...initialJoints];
-      forceHistory = [];
+      forceHistory = [0.02, 0.02, 0.02, 0.02];
       emergencyHalt = false;
       executeStep(0);
     }
@@ -1120,6 +1192,7 @@
 
     // Global Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
       if (e.code === 'Space') {
         e.preventDefault();
         togglePlayback();

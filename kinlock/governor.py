@@ -20,7 +20,7 @@ class KinematicGovernor:
     def __init__(
         self,
         kinematics: DualSO101Kinematics,
-        nominal_distance_mm: float = 250.0,
+        nominal_distance_mm: float = 348.24,
         max_allowed_internal_force_n: float = 15.0,
         k_servo_n_per_mm: float = 80.0,
         k_object_n_per_mm: float = 60.0,

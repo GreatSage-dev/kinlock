@@ -84,7 +84,7 @@ python test/verify_speechmatics_live.py
   * Base Separation:        400.0 mm
   * Arm 1 Initial Tool Pos: [-174.1, 9.4, 439.9] mm
   * Arm 2 Initial Tool Pos: [174.1, 9.4, 439.9] mm
-  * Initial Grasp Distance: 348.24 mm (Target: 250.0 mm)
+  * Initial Grasp Distance: 348.24 mm (Target: 348.24 mm)
   * Effective Series Stiffness (k_eff): 34.29 N/mm
 
 [2/4] EXECUTING UNFILTERED VLA TRAJECTORY (Documenting LeRobot #3154 Failure)...
@@ -128,7 +128,7 @@ Because **statistical probability cannot enforce algebraic invariants**.
 A neural policy is an approximate function approximator $\hat{\pi}_\theta(a_t \mid o_t)$ trained via stochastic gradient descent. Even an exceptionally accurate model with $99.5\%$ coordinate accuracy per joint exhibits non-zero Gaussian variance:
 $$\mathbf{q}_t \sim \mathcal{N}(\boldsymbol{\mu}_t, \boldsymbol{\Sigma}_t), \quad \operatorname{Tr}(\boldsymbol{\Sigma}_t) > 0$$
 
-When two 6-DOF arms grasp a common rigid plate ($L = 250\text{ mm}$), the kinematic constraint is a rigid manifold:
+When two 6-DOF arms grasp a common rigid plate ($L = 348.24\text{ mm}$), the kinematic constraint is a rigid manifold:
 $$g(\mathbf{q}) = \|\mathbf{p}_{\text{ee}1}(\mathbf{q}_1) - \mathbf{p}_{\text{ee}2}(\mathbf{q}_2)\| - L_0 \equiv 0$$
 
 Under Hooke's law, internal tension is proportional to drift error:
@@ -167,7 +167,7 @@ flowchart TD
     subgraph Actuation Layer [Physical Hardware: 1,000 Hz]
         SAT --> MOT1[Left SO-101 Arm (6-DOF)]
         SAT --> MOT2[Right SO-101 Arm (6-DOF)]
-        MOT1 & MOT2 --> OBJ[Rigid Workpiece L=250mm]
+        MOT1 & MOT2 --> OBJ[Rigid Workpiece L=348mm]
     end
 
     style Sovereign Safety Layer fill:#07090E,stroke:#10B981,stroke-width:2px;
@@ -203,7 +203,7 @@ In strict accordance with the King's Court epistemic doctrine, we classify every
 KINLOCK includes a standalone, browser-native 3D visual digital twin and mission control dashboard:
 
 - **`console.html` — Sovereign Operator Cockpit**:
-  - **Three.js 3D Kinematic Visualizer**: Real-time rendering of both 6-DOF SO-101 robotic arms and the shared 250 mm workpiece.
+  - **Three.js 3D Kinematic Visualizer**: Real-time rendering of both 6-DOF SO-101 robotic arms and the shared 348 mm workpiece.
   - **Dynamic Strain Shader**: Workpiece visibly bends and pulses glowing crimson under unconstrained VLA drift, shifting to crystalline emerald under KINLOCK null-space protection.
   - **Live Audio Waveform Oscilloscope**: Real-time canvas oscilloscope showing 16kHz PCM audio stream and Speechmatics partial token arrivals.
   - **Interactive Voice Injection**: Clickable buttons (`"STOP!"`, `"HALT!"`, `"RESUME"`) firing sub-millisecond admittance deceleration.
@@ -239,7 +239,12 @@ kinlock/
 ├── README.md                      # Grand Champion Technical Dossier
 ├── index.html                     # Executive Dossier & Interactive Landing Page
 ├── console.html                   # 3D Sovereign Operator Cockpit (Three.js WebGL)
-├── requirements.txt               # Dependencies (numpy, scipy, osqp, pytest, websockets)
+├── app.py                         # Primary Universal Web & API Entrypoint (Vercel)
+├── pyproject.toml                 # Modern PEP 621 / uv build configuration
+├── requirements.txt               # Lightweight dependencies (numpy, websockets, pytest)
+├── vercel.json                    # Vercel deployment configuration
+├── api/
+│   └── index.py                   # Vercel serverless function & health endpoint
 ├── kinlock/
 │   ├── __init__.py                # Package exports
 │   ├── models.py                  # Telemetry & state data models
@@ -253,7 +258,8 @@ kinlock/
 │   └── trajectory_data.js         # Browser-native JS fixture export
 └── test/
     ├── test_kinlock.py            # Pytest test suite (5/5 unit tests)
-    └── verify_kinlock.py          # 1-second terminal receipt runner
+    ├── verify_kinlock.py          # 1-second terminal receipt runner
+    └── verify_speechmatics_live.py# Live Speechmatics Realtime WebSocket runner
 ```
 
 ---

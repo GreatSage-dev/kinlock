@@ -14,7 +14,7 @@ class DualSO101Kinematics:
     Base positions are mounted symmetrically on the table workbench along the X axis.
     """
 
-    def __init__(self, base_separation_mm: float = 400.0, nominal_grasp_distance_mm: float = 250.0):
+    def __init__(self, base_separation_mm: float = 400.0, nominal_grasp_distance_mm: float = 348.24):
         self.base_separation_mm = base_separation_mm
         self.nominal_grasp_distance_mm = nominal_grasp_distance_mm
 

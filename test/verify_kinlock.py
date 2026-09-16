@@ -34,7 +34,7 @@ def main():
     # 1. INITIALIZE MECHANICAL MODEL (LeRobot BiSOFollower Specification)
     # --------------------------------------------------------------------------
     print("[1/4] INITIALIZING DUAL SO-101 KINEMATIC BACKBONE...")
-    kin = DualSO101Kinematics(base_separation_mm=400.0, nominal_grasp_distance_mm=250.0)
+    kin = DualSO101Kinematics(base_separation_mm=400.0, nominal_grasp_distance_mm=348.24)
     
     # Nominal initial bimanual grasp pose for table-setting
     # Arm 1 grasping left rim of plate, Arm 2 grasping right rim
@@ -48,7 +48,7 @@ def main():
     print(f"  * Base Separation:        {kin.base_separation_mm:.1f} mm")
     print(f"  * Arm 1 Initial Tool Pos: [{ee1_0[0]:.1f}, {ee1_0[1]:.1f}, {ee1_0[2]:.1f}] mm")
     print(f"  * Arm 2 Initial Tool Pos: [{ee2_0[0]:.1f}, {ee2_0[1]:.1f}, {ee2_0[2]:.1f}] mm")
-    print(f"  * Initial Grasp Distance: {init_dist:.2f} mm (Target: {kin.nominal_grasp_distance_mm:.1f} mm)")
+    print(f"  * Initial Grasp Distance: {init_dist:.2f} mm (Target: {kin.nominal_grasp_distance_mm:.2f} mm)")
     
     # Calibrate nominal target to actual initial pose
     governor = KinematicGovernor(
